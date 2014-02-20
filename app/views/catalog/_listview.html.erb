@@ -1,0 +1,101 @@
+<div id="<%= document['LayerId'] %>" class="row">
+	<div class="col-md-12">
+		<div class="" id="<%= document['LayerId'] %>-accordion">
+			<div id="<%= document['LayerId'] %>-collapse" class="panel-collapse collapse">
+				<div class="">
+					<small>
+						<%= layer_type_image(document['DataType']) %>
+						<%= layer_institution_image(document['Institution']) %>
+					<!-- 	<dl class="dl-horizontal">
+							<dt>Data type</dt>
+							<dd><%= document['DataType'] %></dd>
+							<dt>Publisher</dt>
+							<dd><%= document['Publisher'] %></dd>
+							<dt>Access</dt>
+							<dd><%= document['Access'] %></dd>
+							<dt>Date</dt>
+							<dd><%= Date.parse(document['ContentDate']).to_formatted_s(:number).slice(0,4) %></dd>
+							<dt>Availability</dt>
+							<dd><%= document['Availability'] %></dd>
+							<dt>Institution</dt>
+							<dd><%= document['Institution'] %></dd>
+							<dt>Abstract</dt>
+							<dd><%= document['Abstract'] %></dd>
+						</dl> -->
+					</small>
+				</div>
+				<br>
+
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		doc = docs[<%= document_counter %>]
+		if (doc.MinY){
+			bBoxs[<%= document_counter %>] = L.polygon([[doc.MinY, doc.MinX], [doc.MaxY, doc.MinX], [doc.MaxY, doc.MaxX], [doc.MinY,doc.MaxX]])
+			if (mapBbox.length == 0){
+				mapBbox = [[doc.MinY, doc.MinX], [doc.MaxY, doc.MaxX]]
+				console.log(mapBbox)
+			}else{
+				if (doc.MinY < mapBbox[0][0]){
+					mapBbox[0][0] = doc.MinY
+				}
+				if (doc.MinX < mapBbox[0][1]){
+					mapBbox[0][1] = doc.MinX
+				}
+				if (doc.MaxY > mapBbox[1][0]){
+					mapBbox[1][0] = doc.MaxY
+				}
+				if (doc.MaxX > mapBbox[1][1]){
+					mapBbox[1][1] = doc.MaxX
+				}
+			}
+		}
+})
+
+
+$("#<%= document['LayerId'] %>-title").click(function(){
+	$("#<%= document['LayerId'] %>-collapse").collapse("toggle")
+})
+$("#<%= document['LayerId'] %>").click(function(){
+	$("#<%= document['LayerId'] %>-collapse").collapse("toggle")
+})
+$("#<%= document['LayerId'] %>-title").mouseover(function(){
+	if (bBoxs[<%= document_counter %>]){
+		bBoxs[<%= document_counter %>].addTo(map);
+	}
+});
+$("#<%= document['LayerId'] %>").mouseover(function(){
+	if (bBoxs[<%= document_counter %>]){
+		bBoxs[<%= document_counter %>].addTo(map);
+	}
+});
+$("#<%= document['LayerId'] %>-title").mouseout(function(){
+	for(i in map._layers) {
+        if(map._layers[i]._path != undefined && i != 0) {
+            try {
+                map.removeLayer(map._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + m._layers[i]);
+            }
+        }
+    }
+});
+$("#<%= document['LayerId'] %>").mouseout(function(){
+		for(i in map._layers) {
+        if(map._layers[i]._path != undefined && i != 0) {
+            try {
+                map.removeLayer(map._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + m._layers[i]);
+            }
+        }
+    }
+
+});
+
+</script>

@@ -1,0 +1,9 @@
+<% # container for a single doc -%>
+<div class="document <%= render_document_class document %>" itemscope itemtype="<%= document.itemtype %>">
+  <%= render_document_partials document, blacklight_config.index.partials, :document_counter => document_counter %>
+  <% zoom = (10/Math.sqrt(document["Area"])).round().to_s %>
+  <%= zoom %><br>
+  <%= document_show_link_field(document) %>
+  <% here = "https://maps.googleapis.com/maps/api/staticmap?center=" + document["PlaceKeywords"] + "&size=200x200&maptype=roadmap&sensor=false" %>
+  <%= image_tag here %>
+</div>

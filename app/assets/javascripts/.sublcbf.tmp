@@ -1,0 +1,111 @@
+var map;
+
+var serialiseObject = function(obj) {
+    var pairs = [];
+    for (var prop in obj) {
+        if (!obj.hasOwnProperty(prop)) {
+            continue;
+        }
+        pairs.push(prop + '=' + obj[prop]);
+    }
+    return pairs.join('&');
+}
+
+function setupMap(){
+	map = L.map('map');
+	console.log(doc)
+	var location = JSON.parse(doc.Location);
+	if (doc.MinY){
+		var layerBbox = [[doc.MinY, doc.MinX], [doc.MaxY, doc.MinX], [doc.MaxY, doc.MaxX], [doc.MinY,doc.MaxX]];
+		map.fitBounds([[doc.MinY, doc.MinX], [doc.MaxY, doc.MaxX]])
+	}
+	
+	var wmsLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    maxZoom: 18
+	}).addTo(map);
+
+	console.log(location.wfs[0])
+	// http://geoportal.stanford.edu/ogp/featureInfo?OGPID=zz943vx1492&bbox=-32365272.260117,-20037508.34,32365272.260117,20037508.34&lon=-14441094.877852&lat=10410111.754766&buffer=78271.517&x=229&y=123&height=512&width=827
+// http://geowebservices-restricted.stanford.edu/geoserver/wfs/ows?service=WFS…d%3Azz943vx1492&lon=75.673828125&lat=14.604847155053898&outputFormat=jsonp
+	map.on('click', function(e){
+		console.log(e)
+		mapBbox = map.getBounds()
+		var options = {
+			"URL": location.wms[0],
+			"SERVICE": "WMS",
+			"VERSION": "1.1.1",
+			"REQUEST": "GetFeatureInfo",
+			"LAYERS": doc.Name,
+			"STYLES": "",
+			"SRS": "EPSG:4326",
+			"BBOX": mapBbox._southWest.lng + "," + mapBbox._southWest.lat + "," + mapBbox._northEast.lng + "," + mapBbox._northEast.lat,
+			"WIDTH": "600",
+			"HEIGHT": "400",
+			"QUERY_LAYERS": doc.Name,
+			"X": e.containerPoint.x,
+			"Y": e.containerPoint.y,
+			"EXCEPTIONS": "application/json",
+			"info_format": "text/plain"
+		}
+		// options = serialiseObject(options)
+		// console.log(options)
+		// $.getJSON(location.wfs[0] + '/ows?' + options, function(data){
+		// 	console.log(data)
+		// });
+		// $.getJSON(location.wms[0] + '/?' + options, function(data){
+		// 	console.log(data)
+		// });
+		$.ajax({
+			type: 'POST',
+			url: '/wms/handle',
+			data: options,
+			success: function(data){
+				console.log(data)
+			},
+			fail: function(){
+				console.log(error)
+			}
+		});
+
+		// $.ajax({
+		// 	type: 'get',
+		// 	url: location.wfs[0] + '/ows',
+		// 	data: options,
+		// 	datatype:"jsonp",
+		// 	// jsonp: '',
+		// 	jsonpCallback: function(data){
+		// 		console.log('plesa')
+		// 	},
+		// 	success: function(data){
+		// 		console.log(data)
+		// 	}
+		// })
+		// $.getJSON('http://geowebservices-restricted.stanford.edu/geoserver/wfs/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=druid%3Azz943vx1492&count=10&lon=76.46484375&lat=20.138470312451155&outputFormat=json&callback=?', function(data){     
+
+		// 	console.log(data)
+		
+		// })
+	})
+	// map.setZoom(map.getZoom()-1);
+	if (doc.MinY){
+		// L.polygon(layerBbox).addTo(map);	
+	}else{
+		map.fitWorld();
+	}
+	var nexrad = L.tileLayer.wms(location.wms[0], {
+    layers: doc.WorkspaceName + ":" + doc.Name,
+    format: 'image/png',
+    transparent: true,
+    // 'srs': "EPSG:4326"
+    CRS: "EPSG:900913"
+    // attribution: "Weather data © 2012 IEM Nexrad"
+	});
+	nexrad.addTo(map);
+	console.log(nexrad)
+
+}
+
+$(document).ready(function(){
+	setupMap();
+})

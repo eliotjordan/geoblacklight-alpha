@@ -1,0 +1,10 @@
+<% # container for all documents in index view -%>
+<%= javascript_tag "var docs = #{documents.to_json}; var bBoxs = new L.LayerGroup([]); var mapBbox = [];" 
+%>
+
+
+<div id="documents" class="docView col-md-6">
+  <%= render documents, :as => :document %>
+</div>
+
+<%= javascript_include_tag 'mapResult' %>
