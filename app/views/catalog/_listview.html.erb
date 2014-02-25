@@ -1,11 +1,11 @@
-<div id="<%= document['LayerId'] %>" class="row">
+<div class="row" data-layer="<%= document['LayerId'] %>">
 	<div class="col-md-12">
-		<div class="" id="<%= document['LayerId'] %>-accordion">
-			<div id="<%= document['LayerId'] %>-collapse" class="panel-collapse collapse">
+		<div class="" data-layer="<%= document['LayerId'] %>-accordion">
+			<div data-layer="<%= document['LayerId'] %>-collapse" class="panel-collapse collapse">
 				<div class="">
 					<small>
-						<%= layer_type_image(document['DataType']) %>
-						<%= layer_institution_image(document['Institution']) %>
+						<!-- <%= layer_type_image(document['DataType']) %>
+						<%= layer_institution_image(document['Institution']) %> -->
 					<!-- 	<dl class="dl-horizontal">
 							<dt>Data type</dt>
 							<dd><%= document['DataType'] %></dd>
@@ -22,6 +22,17 @@
 							<dt>Abstract</dt>
 							<dd><%= document['Abstract'] %></dd>
 						</dl> -->
+						<ul class="list-unstyled">
+							<li>
+								<%= document['LayerDisplayName'] %>
+							</li>
+							<li>
+								<strong>Year:</strong> <%= Date.parse(document['ContentDate']).to_formatted_s(:number).slice(0,4) %>
+							</li>
+							<li>
+								<strong>Publisher:</strong> <%= document['Publisher'] %>
+							</li>
+						</ul>
 					</small>
 				</div>
 				<br>
@@ -56,46 +67,26 @@
 })
 
 
-$("#<%= document['LayerId'] %>-title").click(function(){
-	$("#<%= document['LayerId'] %>-collapse").collapse("toggle")
+$("*[data-layer=\"<%= document['LayerId']%>\"]").click(function(){
+	$("*[data-layer=\"<%= document['LayerId']%>-collapse\"]").collapse("toggle")
 })
-$("#<%= document['LayerId'] %>").click(function(){
-	$("#<%= document['LayerId'] %>-collapse").collapse("toggle")
-})
-$("#<%= document['LayerId'] %>-title").mouseover(function(){
-	if (bBoxs[<%= document_counter %>]){
-		bBoxs[<%= document_counter %>].addTo(map);
-	}
-});
-$("#<%= document['LayerId'] %>").mouseover(function(){
-	if (bBoxs[<%= document_counter %>]){
-		bBoxs[<%= document_counter %>].addTo(map);
-	}
-});
-$("#<%= document['LayerId'] %>-title").mouseout(function(){
-	for(i in map._layers) {
-        if(map._layers[i]._path != undefined && i != 0) {
-            try {
-                map.removeLayer(map._layers[i]);
-            }
-            catch(e) {
-                console.log("problem with " + e + m._layers[i]);
-            }
-        }
-    }
-});
-$("#<%= document['LayerId'] %>").mouseout(function(){
-		for(i in map._layers) {
-        if(map._layers[i]._path != undefined && i != 0) {
-            try {
-                map.removeLayer(map._layers[i]);
-            }
-            catch(e) {
-                console.log("problem with " + e + m._layers[i]);
-            }
-        }
-    }
 
+$("*[data-layer=\"<%= document['LayerId']%>\"]").mouseover(function(){
+	if (bBoxs[<%= document_counter %>]){
+		bBoxs[<%= document_counter %>].addTo(map);
+	}
+});
+$("*[data-layer=\"<%= document['LayerId']%>\"]").mouseout(function(){
+	for(i in map._layers) {
+        if(map._layers[i]._path !== undefined && i !== 0) {
+            try {
+                map.removeLayer(map._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + map._layers[i]);
+            }
+        }
+    }
 });
 
 </script>

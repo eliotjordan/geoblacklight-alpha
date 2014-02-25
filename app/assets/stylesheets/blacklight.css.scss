@@ -14,3 +14,35 @@
   margin-right: 20px;
   padding-left: 0;
 }
+
+form.range_limit input.range_begin, form.range_limit input.range_end {
+  @extend .input-sm;
+}
+
+form.range_limit input.submit {
+  @extend .btn-sm;
+}
+
+.list-group-item {
+  padding: 2px 2px;
+  border-style: none;
+}
+
+.list-group-item .fa-li {
+  position: static;
+}
+
+.list-group  > a.disabled  {
+  color: $nav-disabled-link-color;
+  &:hover,
+  &:focus {
+    color: $nav-disabled-link-hover-color;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: not-allowed;
+  }
+}
+
+.show-tools .bookmark_toggle {
+  padding: 0px 12px;
+}

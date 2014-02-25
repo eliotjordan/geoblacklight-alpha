@@ -30,8 +30,8 @@ function setupMap(){
 //Setup map on doc ready
 $(document).ready(function(){
 	setupMap();
-	console.log(mapBbox)
 	map.fitBounds(mapBbox)
+	// $('.tooltip-icon').tooltip();
 			// $("#abstract").popover({
 			// 	content: doc['Abstract']
 			// })

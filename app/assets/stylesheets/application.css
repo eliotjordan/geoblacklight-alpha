@@ -18,11 +18,12 @@
  *= require  'blacklight_range_limit'
  *         
 */
+
+
+
 .docView{
 
 }
-
-
 
 .text-span{
   width:100%;
@@ -36,14 +37,7 @@
 }
 
 #map.mapview-map {
-	margin-top: 40px;
-	/*width: 600px;
- *
- * Used by blacklight_range_limit
- *= require  'blacklight_range_limit'
- *         
-*/
-	height: 400px;
+	height: 440px;
   cursor: crosshair;
 }
 

@@ -18,6 +18,7 @@
 //
 // Required by Blacklight
 //= require blacklight/blacklight
+//= require bootstrap/tooltip
 
 
 

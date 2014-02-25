@@ -4,6 +4,10 @@ class SolrDocument
   include Blacklight::Solr::Document
 
   self.unique_key = 'LayerId'
+
+  # def to_param
+  #   URI.encode(self.unique_key)
+  # end
   
   # Email uses the semantic field mappings below to generate the body of an email.
   SolrDocument.use_extension( Blacklight::Solr::Document::Email )

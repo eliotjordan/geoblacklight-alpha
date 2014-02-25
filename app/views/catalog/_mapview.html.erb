@@ -8,15 +8,15 @@
 		<dt>Publisher</dt>
 		<dd><%= document['Publisher'] %></dd>
 		<dt>Access</dt>
-		<dd><%= document['Access'] %></dd>
+		<dd><%= document['Access'].titlecase %></dd>
 		<dt>Availability</dt>
-		<dd><%= document['Availability'] %></dd>
+		<dd><%= document['Availability'].titlecase %></dd>
 		<dt>Date</dt>
 		<dd><%= Date.parse(document['ContentDate']).to_formatted_s(:number).slice(0,4) %></dd>
 		<dt>Institution</dt>
 		<dd><%= document['Institution'] %></dd>
 		<dt>Abstract</dt>
-		<dd id=""><%= document['Abstract'].slice(0,150) %> ...<a id="abstract" data-toggle="popover">more</a></dd>
+		<dd id=""><%= abstract_truncator(document['Abstract']) %></dd>
 	</dl>
 </div>
 <!-- <div>
@@ -25,19 +25,3 @@
 <div>
 	<%= render 'themename_tags', :keywords => document['ThemeKeywords'] %>
 </div> -->
-<div class='row'>
-	<div class="col-md-8">
-<!-- 		<input id="layer-transparency" type="range" class="" name="points" min="1" max="100" step="5" value="100" onInput='changeTransparency();'>
- -->		<div id='map' class='mapview-map'></div>
-		<div id='control'>
-    	<div id='handle'></div>
-    	<div id='bottom'></div>
-		</div>
-	</div>
-	<div id='table-container' class='col-md-4'><div id='attribute-table' ></div></div>
-
-</div>
-<br>
-<br>
-<%= javascript_tag "var doc = #{document.to_json};" %>
-<%= javascript_include_tag 'mapView' %>

@@ -1,10 +1,22 @@
 DevGeoBl::Application.routes.draw do
+  get "download/file"
   post "download/shapefile"
   post "download/kml"
   post "wms/handle"
   # post "wfs/handle"
   root :to => "catalog#index"
-  blacklight_for :catalog
+
+  #Need to route the catalog#facet route first, as the following regex will match it.  Due to Berkeley having uniqueId's with "/"
+  get '/catalog/facet/:id' => 'catalog#facet'
+
+  #Matches unique ids with ".", ":", "_", "-", "/"
+  constraints(:id => /[0-9A-Za-z\-\.\:\_\/]+/) do
+    blacklight_for :catalog
+    resources :bookmarks
+  end
+
+  # blacklight_for :catalog, constraints: { :id => /[0-9A-Za-z\-\.\:\_\/]+/ }
+
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

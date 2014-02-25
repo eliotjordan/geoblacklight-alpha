@@ -12,6 +12,7 @@ class CatalogController < ApplicationController
       :rows => 10,
       :defType => 'dismax',
       :qf => 'Institution LayerDisplayName ThemeKeywords PlaceKeywordsSynonyms Name Abstract',
+      # :pf => 'LayerDisplayName^10',
       'q.alt' => '*:*'
     }
 
@@ -74,7 +75,7 @@ class CatalogController < ApplicationController
     #    :years_25 => { :label => 'within 25 Years', :fq => "pub_date:[#{Time.now.year - 25 } TO *]" }
     # }
 
-    config.add_facet_field 'InstitutionSort', :label => 'Institution', :limit => 4
+    config.add_facet_field 'InstitutionSort', :label => 'Institution', :limit => 7
     config.add_facet_field 'DataTypeSort', :label => 'Data type', :limit => 4
     # config.add_facet_field 'ThemeKeywordsExact', :label => 'Themes', :limit => 6
     # config.add_facet_field 'PlaceKeywordsSynonyms', :label => 'Places', :limit => 6
