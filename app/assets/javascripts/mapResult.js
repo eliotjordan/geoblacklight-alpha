@@ -9,7 +9,7 @@ var serialiseObject = function(obj) {
         pairs.push(prop + '=' + obj[prop]);
     }
     return pairs.join('&');
-}
+};
 
 
 
@@ -17,7 +17,7 @@ function setupMap(){
 	map = L.map('map').setView([0,0],1);
 	
 
-	var wmsServer
+	var wmsServer;
 
 	
 	var basemap = L.tileLayer('https://a.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png', {
@@ -26,13 +26,14 @@ function setupMap(){
 	}).addTo(map);
 }
 
+// function WktBboxToJson(doc){
+// 	return [[doc.layer_sw_latlon_0_f, doc.layer_sw_latlon_1_f], [doc.layer_ne_latlon_0_f, doc.layer_sw_latlon_1_f], [doc.layer_ne_latlon_0_f, doc.layer_ne_latlon_1_f], [doc.layer_sw_latlon_0_f, doc.layer_ne_latlon_1_f]];
+// }
+
 
 //Setup map on doc ready
 $(document).ready(function(){
 	setupMap();
-	map.fitBounds(mapBbox)
-	// $('.tooltip-icon').tooltip();
-			// $("#abstract").popover({
-			// 	content: doc['Abstract']
-			// })
-})
+	map.fitBounds(mapBbox);
+});
+

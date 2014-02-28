@@ -68,6 +68,8 @@
       "maxlen": 80,
 
       // Enforce placing 'use strict' at the top function scope
-      "strict": true
+      "strict": true,
+
+      "smarttabs": true
     }
 }

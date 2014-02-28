@@ -1,36 +1,18 @@
-<div class="row" data-layer="<%= document['LayerId'] %>">
+<div class="row" data-layer="<%= document['uuid'] %>">
 	<div class="col-md-12">
-		<div class="" data-layer="<%= document['LayerId'] %>-accordion">
-			<div data-layer="<%= document['LayerId'] %>-collapse" class="panel-collapse collapse">
+		<div class="" data-layer="<%= document['uuid'] %>-accordion">
+			<div data-layer="<%= document['uuid'] %>-collapse" class="panel-collapse collapse">
 				<div class="">
 					<small>
-						<!-- <%= layer_type_image(document['DataType']) %>
-						<%= layer_institution_image(document['Institution']) %> -->
-					<!-- 	<dl class="dl-horizontal">
-							<dt>Data type</dt>
-							<dd><%= document['DataType'] %></dd>
-							<dt>Publisher</dt>
-							<dd><%= document['Publisher'] %></dd>
-							<dt>Access</dt>
-							<dd><%= document['Access'] %></dd>
-							<dt>Date</dt>
-							<dd><%= Date.parse(document['ContentDate']).to_formatted_s(:number).slice(0,4) %></dd>
-							<dt>Availability</dt>
-							<dd><%= document['Availability'] %></dd>
-							<dt>Institution</dt>
-							<dd><%= document['Institution'] %></dd>
-							<dt>Abstract</dt>
-							<dd><%= document['Abstract'] %></dd>
-						</dl> -->
 						<ul class="list-unstyled">
 							<li>
-								<%= document['LayerDisplayName'] %>
+								<%= document['dc_title_s'] %>
 							</li>
 							<li>
-								<strong>Year:</strong> <%= Date.parse(document['ContentDate']).to_formatted_s(:number).slice(0,4) %>
+								<strong>Year:</strong> <%= date_to_year(document['dc_date_dt']) %>
 							</li>
 							<li>
-								<strong>Publisher:</strong> <%= document['Publisher'] %>
+								<strong>Publisher:</strong> <%= document['dc_publisher_t'] %>
 							</li>
 						</ul>
 					</small>
@@ -43,40 +25,41 @@
 </div>
 <script>
 	$(document).ready(function(){
-		doc = docs[<%= document_counter %>]
-		if (doc.MinY){
-			bBoxs[<%= document_counter %>] = L.polygon([[doc.MinY, doc.MinX], [doc.MaxY, doc.MinX], [doc.MaxY, doc.MaxX], [doc.MinY,doc.MaxX]])
+		var doc = docs[<%= document_counter %>];
+		//Calculates map bounding box and creates layer bbox
+		if (doc.layer_bbox){
+			bBoxs[<%= document_counter %>] = L.polygon([[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d], [doc.layer_sw_latlon_0_d, doc.layer_ne_latlon_1_d]]);
+			// console.log(bBoxs)
 			if (mapBbox.length == 0){
-				mapBbox = [[doc.MinY, doc.MinX], [doc.MaxY, doc.MaxX]]
-				console.log(mapBbox)
+				mapBbox = [[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d]];
 			}else{
-				if (doc.MinY < mapBbox[0][0]){
-					mapBbox[0][0] = doc.MinY
+				if (doc.layer_sw_latlon_0_d < mapBbox[0][0]){
+					mapBbox[0][0] = doc.layer_sw_latlon_0_d;
 				}
-				if (doc.MinX < mapBbox[0][1]){
-					mapBbox[0][1] = doc.MinX
+				if (doc.layer_sw_latlon_1_d < mapBbox[0][1]){
+					mapBbox[0][1] = doc.layer_sw_latlon_1_d;
 				}
-				if (doc.MaxY > mapBbox[1][0]){
-					mapBbox[1][0] = doc.MaxY
+				if (doc.layer_ne_latlon_0_d > mapBbox[1][0]){
+					mapBbox[1][0] = doc.layer_ne_latlon_0_d;
 				}
-				if (doc.MaxX > mapBbox[1][1]){
-					mapBbox[1][1] = doc.MaxX
+				if (doc.layer_ne_latlon_1_d > mapBbox[1][1]){
+					mapBbox[1][1] = doc.layer_ne_latlon_1_d;
 				}
 			}
 		}
+});
+
+
+$("*[data-layer=\"<%= document['uuid']%>\"]").click(function(){
+	$("*[data-layer=\"<%= document['uuid']%>-collapse\"]").collapse("toggle")
 })
 
-
-$("*[data-layer=\"<%= document['LayerId']%>\"]").click(function(){
-	$("*[data-layer=\"<%= document['LayerId']%>-collapse\"]").collapse("toggle")
-})
-
-$("*[data-layer=\"<%= document['LayerId']%>\"]").mouseover(function(){
+$("*[data-layer=\"<%= document['uuid']%>\"]").mouseover(function(){
 	if (bBoxs[<%= document_counter %>]){
 		bBoxs[<%= document_counter %>].addTo(map);
 	}
 });
-$("*[data-layer=\"<%= document['LayerId']%>\"]").mouseout(function(){
+$("*[data-layer=\"<%= document['uuid']%>\"]").mouseout(function(){
 	for(i in map._layers) {
         if(map._layers[i]._path !== undefined && i !== 0) {
             try {

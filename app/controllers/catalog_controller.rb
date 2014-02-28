@@ -1,19 +1,24 @@
 # -*- encoding : utf-8 -*-
 require 'blacklight/catalog'
 
-class CatalogController < ApplicationController  
+class CatalogController < ApplicationController 
 
   include Blacklight::Catalog
 
   configure_blacklight do |config|
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = { 
-      :qt => 'search',
+      # :qt => 'query',
       :rows => 10,
-      :defType => 'dismax',
-      :qf => 'Institution LayerDisplayName ThemeKeywords PlaceKeywordsSynonyms Name Abstract',
+      # :defType => 'dismax',
+      # :df => 'text',
+      # :q => 'text',
+      # :fq => ['layer_bbox'],
+      # :fq => ['layer_bbox:"IsWithin(-88 26 -79 36)"'],
+      :sort => 'score desc'
+      # :qf => 'ThemeKeywordsExact',
       # :pf => 'LayerDisplayName^10',
-      'q.alt' => '*:*'
+      # 'q.alt' => '*:*'
     }
 
     ## Default parameters to send on single-document requests to Solr. These settings are the Blackligt defaults (see SolrHelper#solr_doc_params) or 
@@ -24,19 +29,18 @@ class CatalogController < ApplicationController
      ## These are hard-coded in the blacklight 'document' requestHandler
      # :fl => '*',
      # :rows => 1
-     :q => '{!raw f=LayerId v=$id}' 
+     :q => '{!raw f=uuid v=$id}' 
     }
 
     # solr field configuration for search results/index views
     # config.index.show_link = 'title_display'
     # config.index.record_display_type = 'format'
 
-    config.index.show_link = 'LayerDisplayName'
+    config.index.title_field = 'dc_title_t'
 
     # solr field configuration for document/show views
-    config.show.html_title = 'LayerDisplayName'
-    config.show.heading = 'LayerDisplayName'
-    config.show.display_type = 'format'
+    
+    config.show.display_type_field = 'format'
 
 
 
@@ -65,7 +69,7 @@ class CatalogController < ApplicationController
     # config.add_facet_field 'language_facet', :label => 'Language', :limit => true 
     # config.add_facet_field 'lc_1letter_facet', :label => 'Call Number' 
     # config.add_facet_field 'subject_geo_facet', :label => 'Region' 
-    # config.add_facet_field 'subject_era_facet', :label => 'Era'  
+    # config.add_facet_field 'layer_bbox', :fq => "layer_bbox:IsWithin(-88,26,-79,36)", :label => 'Spatial'  
 
     # config.add_facet_field 'example_pivot_field', :label => 'Pivot Field', :pivot => ['format', 'language_facet']
 
@@ -75,14 +79,14 @@ class CatalogController < ApplicationController
     #    :years_25 => { :label => 'within 25 Years', :fq => "pub_date:[#{Time.now.year - 25 } TO *]" }
     # }
 
-    config.add_facet_field 'InstitutionSort', :label => 'Institution', :limit => 7
-    config.add_facet_field 'DataTypeSort', :label => 'Data type', :limit => 4
+    config.add_facet_field 'dc_source_s', :label => 'Institution', :limit => 7
+    config.add_facet_field 'layer_type_s', :label => 'Data type', :limit => 4
     # config.add_facet_field 'ThemeKeywordsExact', :label => 'Themes', :limit => 6
     # config.add_facet_field 'PlaceKeywordsSynonyms', :label => 'Places', :limit => 6
     # config.add_facet_field 'PublisherSort', :label => 'Publisher', :limit => 6
-    config.add_facet_field 'Access', :label => 'Access', :limit => 3
+    config.add_facet_field 'dc_rights_s', :label => 'Access', :limit => 3
 
-    config.add_facet_field 'PubYear_i', :label => 'Year', :limit => 10, :range => {
+    config.add_facet_field 'layer_year_i', :label => 'Year', :limit => 10, :range => {
       # :num_segments => 6,
       :assumed_boundaries => [1100, 2015]
       # :segments => true    
@@ -106,30 +110,30 @@ class CatalogController < ApplicationController
     # config.add_index_field 'published_vern_display', :label => 'Published:'
     # config.add_index_field 'lc_callnum_display', :label => 'Call number:'
 
-    config.add_index_field 'LayerDisplayName', :label => 'Display Name:'
-    config.add_index_field 'Institution', :label => 'Institution:'
-    config.add_index_field 'Access', :label => 'Access:'
-    config.add_index_field 'Area', :label => 'Area:'
-    config.add_index_field 'PlaceKeywordsSynonyms', :label => 'Place Keywords:'
+    # config.add_index_field 'dc_title_t', :label => 'Display Name:'
+    # config.add_index_field 'dc_source_s', :label => 'Institution:'
+    # config.add_index_field 'dc_rights_s', :label => 'Access:'
+    # # config.add_index_field 'Area', :label => 'Area:'
+    # config.add_index_field 'dc_subject_sm', :label => 'Keywords:'
 
 
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
-    config.add_show_field 'title_display', :label => 'Title:' 
-    config.add_show_field 'title_vern_display', :label => 'Title:' 
-    config.add_show_field 'subtitle_display', :label => 'Subtitle:' 
-    config.add_show_field 'subtitle_vern_display', :label => 'Subtitle:' 
-    config.add_show_field 'author_display', :label => 'Author:' 
-    config.add_show_field 'author_vern_display', :label => 'Author:' 
-    config.add_show_field 'format', :label => 'Format:' 
-    config.add_show_field 'url_fulltext_display', :label => 'URL:'
-    config.add_show_field 'url_suppl_display', :label => 'More Information:'
-    config.add_show_field 'language_facet', :label => 'Language:'
-    config.add_show_field 'published_display', :label => 'Published:'
-    config.add_show_field 'published_vern_display', :label => 'Published:'
-    config.add_show_field 'lc_callnum_display', :label => 'Call number:'
-    config.add_show_field 'isbn_t', :label => 'ISBN:'
+    # config.add_show_field 'title_display', :label => 'Title:' 
+    # config.add_show_field 'title_vern_display', :label => 'Title:' 
+    # config.add_show_field 'subtitle_display', :label => 'Subtitle:' 
+    # config.add_show_field 'subtitle_vern_display', :label => 'Subtitle:' 
+    # config.add_show_field 'author_display', :label => 'Author:' 
+    # config.add_show_field 'author_vern_display', :label => 'Author:' 
+    # config.add_show_field 'format', :label => 'Format:' 
+    # config.add_show_field 'url_fulltext_display', :label => 'URL:'
+    # config.add_show_field 'url_suppl_display', :label => 'More Information:'
+    # config.add_show_field 'language_facet', :label => 'Language:'
+    # config.add_show_field 'published_display', :label => 'Published:'
+    # config.add_show_field 'published_vern_display', :label => 'Published:'
+    # config.add_show_field 'lc_callnum_display', :label => 'Call number:'
+    # config.add_show_field 'isbn_t', :label => 'ISBN:'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -190,22 +194,22 @@ class CatalogController < ApplicationController
     #   }
     # end
 
-     config.add_search_field('Institution') do |field|
-      field.solr_parameters = { :'spellcheck.dictionary' => 'Institution' }
-      field.solr_local_parameters = { 
-        :qf => '$Institution_qf',
-        :pf => '$Institution_pf'
-      }
-    end
+    #  config.add_search_field('Institution') do |field|
+    #   field.solr_parameters = { :'spellcheck.dictionary' => 'Institution' }
+    #   field.solr_local_parameters = { 
+    #     :qf => '$Institution_qf',
+    #     :pf => '$Institution_pf'
+    #   }
+    # end
 
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    # config.add_sort_field 'score desc, pub_date_sort desc, title_sort asc', :label => 'relevance'
-    # config.add_sort_field 'pub_date_sort desc, title_sort asc', :label => 'year'
+    config.add_sort_field 'score desc, dc_date_dt desc, dc_title_t asc', :label => 'relevance'
+    config.add_sort_field 'layer_year_i desc, dc_title_t asc', :label => 'year'
     # config.add_sort_field 'author_sort asc, title_sort asc', :label => 'author'
-    # config.add_sort_field 'title_sort asc, pub_date_sort desc', :label => 'title'
+    config.add_sort_field 'dc_title_t asc, layer_year_i desc', :label => 'title'
 
     # If there are more than this many search results, no spelling ("did you 
     # mean") suggestion is offered.

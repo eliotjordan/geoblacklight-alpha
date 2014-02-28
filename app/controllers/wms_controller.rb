@@ -7,7 +7,11 @@ class Layer
   def self.getInfo(params)
   	url = params['URL']
   	params['BBOX'] = formatLatLng(params['BBOX'])
-  	puts params
+    # puts 'hallo'
+  	# params.delete "URL"
+    params.delete "action"
+    params.delete "controller"
+    puts params
     get(url, :query => params.except('URL'))
   end
 end
@@ -36,7 +40,9 @@ class WmsController < ApplicationController
   def handle
   	params["info_format"] = "text/html"
   	response = Layer.getInfo(params)
-
+    # puts response.inspect
+    puts response.body
+    puts response.request.inspect
   	
 
   	page = Nokogiri::HTML(response.body)

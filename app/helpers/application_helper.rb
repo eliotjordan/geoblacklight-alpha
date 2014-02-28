@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+def date_to_year(date)
+	Date.parse(date).to_formatted_s(:number).slice(0,4)
+end
+
 def sms_helper()
 	content_tag(:i, '', :class => 'fa fa-li fa-mobile') + t('blacklight.tools.sms')
 end

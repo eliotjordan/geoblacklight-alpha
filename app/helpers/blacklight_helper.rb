@@ -14,13 +14,13 @@ module BlacklightHelper
     # # puts action_name
     # # puts render_document_partial
     # # puts document_partial_path_templates
-    puts action_name
+    # puts action_name
     if action_name.to_s == 'index_header'
       document_partial_path_templates.each do |str|
         # XXX rather than handling this logic through exceptions, maybe there's a Rails internals method
         # for determining if a partial template exists..
         begin
-          puts format
+          # puts format
           return render :partial => (str % { :action_name => action_name, :format => format, :index_view_type => document_index_view_type }), :locals=>locals.merge({:document=>doc})
         rescue ActionView::MissingTemplate
           nil

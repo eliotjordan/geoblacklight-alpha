@@ -14,8 +14,6 @@ class Layer
   end
 end
 
-# http://sds1.itc.virginia.edu:8080/thdl-geoserver/wfs?typename=thdl%3Atest2&layers=thdl%3Atest2&projection=EPSG%3A4326&service=wfs&version=1.0.0&request=GetFeature&srs=EPSG%3A4326&outputformat=shape-zip&cql_filter=[cql]
-
 class DownloadController < ApplicationController
 	def file
 		
@@ -24,109 +22,86 @@ class DownloadController < ApplicationController
 	end
 
   def shapefile
-  	location = JSON.parse(params['Location'])
-  	
-  	#checks for different types of wfs/wms configurations
-  	if location['wfs'].kind_of?(Array)
-  		wfsuri = location['wfs'][0]
-		else
-			wfsuri = location['wfs']
-		end
-
+ 
 		puts session['session_id']
-		# if location['wms'].kind_of?(Array)
-  # 		wmsuri = location['wms'][0]
-		# else
-		# 	wmsuri = location['wms']
-		# end
-
-		layerName = params['WorkspaceName'] + ":" + params['Name']
-
-
-		# dparams = {:service => 'WMS', :version => '1.1.1', :request => 'DescribeLayer', :layers => layerName}
-		# info = HTTParty.get(wmsuri, :query => dparams)
-		# puts info.parsed_response
-
-  	params = {:service => 'wfs', :version => '2.0.0', :request => 'GetFeature', :srsName => 'EPSG:4326', :outputformat => 'SHAPE-ZIP', :typeName => layerName}
+		uuid = params['uuid']
+		layername = params['layer_id_s']
+		wfsurl = params['layer_wfs_url']
+		
+  	params = {:service => 'wfs', :version => '2.0.0', :request => 'GetFeature', :srsName => 'EPSG:4326', :outputformat => 'SHAPE-ZIP', :typeName => layername}
   	
 		token = SecureRandom.base64(8).tr('+/=lIO0', 'abc123')
 		error = ''
 
-		# outuri = URI(wfsuri)
-		# outuri.query = URI.encode_www_form(params)
-		# puts outuri
-
-
 		if !Dir.exists?('tmp/data')
 			Dir.mkdir('tmp/data')
 		end
-		File.open("tmp/data/#{token}-shapefile.zip", 'wb')	do |f|
-				puts "#{token}-shapefile.zip created"
-				# f.write 
-				dl = HTTParty.get(wfsuri, :query => params)
-				# puts dl.inspect
-				if dl.headers['content-type'] == 'application/zip'
-					f.write dl.parsed_response
-				else
-					error = dl.parsed_response
-				end
+		if (!File.file?("tmp/data/#{uuid}-shapefile.zip"))
+			File.open("tmp/data/#{uuid}-shapefile.zip", 'wb')	do |f|
+					puts "#{uuid}-shapefile.zip created"
+					dl = HTTParty.get(wfsurl, :query => params)
+					if dl.headers['content-type'] == 'application/zip'
+						f.write dl.parsed_response
+					else
+						error = dl.parsed_response
+					end
+			end
+		else
+			puts "#{uuid}-shapefile.zip already exists"
 		end
   	respond_to do |format|
   		if error.length > 0
  				puts 'error!'
   			format.json { render :json => {:error => error}}
-  			File.delete("tmp/data/#{token}-shapefile.zip")
-  			puts "#{token}-shapefile.zip deleted"
+  			File.delete("tmp/data/#{uuid}-shapefile.zip")
+  			puts "#{uuid}-shapefile.zip deleted"
   		else
-  			format.json { render :json => {:data => "#{token}-shapefile.zip"}}
+  			format.json { render :json => {:data => "#{uuid}-shapefile.zip"}}
 			end
 		end
 
   end
 
   def kml
-
-  	location = JSON.parse(params['Location'])
   	
-  	#checks for different types of wfs/wms configurations
-  	if location['wms'].kind_of?(Array)
-  		wmsuri = location['wms'][0]
-		else
-			wmsuri = location['wms']
-		end
-		# http://geowebservices-restricted.stanford.edu/geoserver/druid/wms?service=WMS&version=1.1.0&request=GetMap&layers=druid:vv853br8653&styles=&bbox=-180.0,24.231259875615,180.0,73.9908661530771&width=2387&height=330&srs=EPSG:4326&format=application/vnd.google-earth.kmz
-
-		layerName = params['WorkspaceName'] + ":" + params['Name']
-		bbox = [params['MinX'], params['MinY'], params['MaxX'], params['MaxY']]
+		layername = params['layer_id_s']
+		puts layername
+		bbox = [params['layer_sw_latlon_1_d'], params['layer_sw_latlon_0_d'], params['layer_ne_latlon_1_d'], params['layer_ne_latlon_0_d']]
 		bbox = bbox.join(',')
+		wmsurl = params['layer_wms_url']
+		uuid = params['uuid']
+		puts bbox
 
-  	params = {:service => 'wms', :version => '1.1.0', :request => 'GetMap', :srsName => 'EPSG:4326', :format => 'application/vnd.google-earth.kmz', :layers => layerName, :bbox => bbox, :width => 2000, :height => 2000}
+  	params = {:service => 'wms', :version => '1.1.0', :request => 'GetMap', :srsName => 'EPSG:900913', :format => 'application/vnd.google-earth.kmz', :layers => layername, :bbox => bbox, :width => 2000, :height => 2000}
   	
-		token = SecureRandom.base64(8).tr('+/=lIO0', 'abc123')
 		error = ''
 
 		if !Dir.exists?('tmp/data')
 			Dir.mkdir('tmp/data')
 		end
-		File.open("tmp/data/#{token}.kmz", 'wb')	do |f|
-				puts "#{token}.kmz created"
-				# f.write 
-				dl = HTTParty.get(wmsuri, :query => params)
-				puts dl.headers.inspect
-				if dl.headers['content-type'] == 'application/vnd.google-earth.kmz'
-					f.write dl.parsed_response
-				else
-					error = dl.parsed_response
-				end
+		if (!File.file?("tmp/data/#{uuid}.kmz"))
+			File.open("tmp/data/#{uuid}.kmz", 'wb')	do |f|
+					puts "#{uuid}.kmz created"
+					dl = HTTParty.get(wmsurl, :query => params)
+					puts dl.headers.inspect
+					puts dl.request.inspect
+					if dl.headers['content-type'] == 'application/vnd.google-earth.kmz'
+						f.write dl.parsed_response
+					else
+						error = dl.parsed_response
+					end
+			end
+		else
+			puts "#{uuid}.kmz alread exists"
 		end
   	respond_to do |format|
   		if error.length > 0
  				puts 'error!'
   			format.json { render :json => {:error => error}}
-  			File.delete("tmp/data/#{token}.kmz")
-  			puts "#{token}.kmz deleted"
+  			File.delete("tmp/data/#{uuid}.kmz")
+  			puts "#{uuid}.kmz deleted"
   		else
-  			format.json { render :json => {:data => "#{token}.kmz"}}
+  			format.json { render :json => {:data => "#{uuid}.kmz"}}
 			end
 		end
   end

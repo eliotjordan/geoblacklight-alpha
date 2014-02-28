@@ -9,7 +9,7 @@ gem 'sqlite3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
-gem 'blacklight', '~> 5.0.2'
+gem 'blacklight', '5.0.2'
 
 gem 'blacklight_range_limit'
 

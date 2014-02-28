@@ -44,5 +44,5 @@
 </div>
 <br>
 <br>
-<%= javascript_tag "var doc = #{@document.to_json(:except => ['Abstract', 'FgdcText'])};" %>
+<%= javascript_tag "var doc = #{@document.to_json};" %>
 <%= javascript_include_tag 'mapView' %>

@@ -1,6 +1,6 @@
 "use strict";
 
-var map, wmsLayer, spinner, mapBbox, alert;
+var map, wmsLayer, spinner, mapBbox, alert, layerBbox;
 
 var serialiseObject = function (obj) {
     var pairs = [];
@@ -11,6 +11,10 @@ var serialiseObject = function (obj) {
         pairs.push(prop + '=' + obj[prop]);
     }
     return pairs.join('&');
+};
+
+function WktBboxToJson(doc){
+	return [[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d], [doc.layer_sw_latlon_0_d, doc.layer_ne_latlon_1_d]];
 }
 
 
@@ -18,20 +22,12 @@ var serialiseObject = function (obj) {
 function setupMap(){
 	map = L.map('map');
 	console.log(doc)
-	var location = JSON.parse(doc.Location);
-	if (doc.MinY){
-		var layerBbox = [[doc.MinY, doc.MinX], [doc.MaxY, doc.MinX], [doc.MaxY, doc.MaxX], [doc.MinY,doc.MaxX]];
-		map.fitBounds([[doc.MinY, doc.MinX], [doc.MaxY, doc.MaxX]]);
-	}
-
-	var wmsServer, wfsServer;
-
-	if (location.wms && location.wms[0].length < 2){
-			wmsServer = location.wms;
-	}else{
-		if (location.wms){
-			wmsServer = location.wms[0];
-		}
+	// var layerBbox;
+	// var location = JSON.parse(doc.Location);
+	if (doc.layer_bbox){
+		layerBbox = WktBboxToJson(doc);
+		// console.log([[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d]])
+		map.fitBounds([[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d]]);
 	}
 
 	var basemap = L.tileLayer('https://a.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png', {
@@ -45,21 +41,21 @@ function setupMap(){
 		// console.log(e)
 		mapBbox = map.getBounds()
 		var wmsoptions = {
-			"URL": wmsServer,
+			"URL": doc.layer_wms_url,
 			"SERVICE": "WMS",
 			"VERSION": "1.1.1",
 			"REQUEST": "GetFeatureInfo",
-			"LAYERS": doc.WorkspaceName + ":" + doc.Name,
+			"LAYERS": doc.layer_name_s,
 			"STYLES": "",
 			"SRS": "EPSG:4326",
 			"BBOX": mapBbox._southWest.lng + "," + mapBbox._southWest.lat + "," + mapBbox._northEast.lng + "," + mapBbox._northEast.lat,
 			"WIDTH": $("#map").width(),
-			"HEIGHT": "400",
-			"QUERY_LAYERS": doc.WorkspaceName + ":" + doc.Name,
+			"HEIGHT": $("#map").height(),
+			"QUERY_LAYERS": doc.layer_name_s,
 			"X": Math.round(e.containerPoint.x),
 			"Y": Math.round(e.containerPoint.y),
 			"EXCEPTIONS": "application/json",
-			"info_format": "application/json"
+			"info_dormat": "application/json"
 		}
 		console.log(e);
 
@@ -75,6 +71,7 @@ function setupMap(){
 			url: '/wms/handle',
 			data: wmsoptions,
 			success: function(data){
+				console.log(data)
 				if ('gis_service' in data){
 					console.log(data);
 					return;
@@ -85,31 +82,23 @@ function setupMap(){
 				});
 				$('#attribute-table').replaceWith(t);
 			},
-			fail: function(){
-				console.log(error)
+			fail: function(error){
+				console.log(error);
 			}
 		});
-	})
-	// map.setZoom(map.getZoom()-1);
-	if (doc.MinY){
-		// L.polygon(layerBbox).addTo(map);	
-	}else{
-		map.fitWorld();
-	}
+	});
+	
 
-	// if (doc.Institution == "Stanford"){
-	// 		location.wms[0] = "http://kurma-pod1-prod.stanford.edu/geoserver/wms";
-	// }
-	var crs = "EPSG:3857"
-	if (doc.Institution === 'Tufts'){
-		crs = "EPSG:900913"
+	var crs = "EPSG:900913";
+	if (doc.dc_source_s === 'Tufts'){
+		crs = "EPSG:900913";
 	}
-	if (doc.DataType !== 'LibraryRecord' && (doc.Access == 'Public' || doc.Institution == 'Stanford')){
-		wmsLayer = L.tileLayer.wms(wmsServer, {
-	    layers: doc.WorkspaceName + ":" + doc.Name,
-	    format: 'image/png',
-	    transparent: true,  //so this seems to work for Stanford and Harvard
-	    CRS: crs
+	if (doc.layer_type_s !== 'LibraryRecord' && (doc.dc_rights_s == 'Public' || doc.dc_source_s == 'Stanford')){
+		wmsLayer = L.tileLayer.wms(doc.layer_wms_url, {
+			layers: doc.layer_id_s,
+			format: 'image/png',
+			transparent: true,  //so this seems to work for Stanford and Harvard
+			CRS: crs
 		}).addTo(map);
 	}else{
 		L.polygon(layerBbox).addTo(map);
@@ -150,7 +139,7 @@ $(document).ready(function(){
 	$('#more-abstract').on('click', function(){
 		$('#abstract-trunc').toggle();
 		$('#abstract-full').removeClass('hidden');
-	})
+	});
 
 	//Fire download shapefile REQUEST
 	$('#download-shapefile').on('click', function(){
@@ -165,7 +154,7 @@ $(document).ready(function(){
 				$('#download-shapefile').removeClass('disabled');
 				$('#icon-shapefile').removeClass('fa-spinner fa-spin');
 				$('#icon-shapefile').addClass('fa-download');
-				console.log(data)
+				console.log(data);
 				if ('error' in data){
 					console.log('something bad');
 					alert = "<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Holy guacamole!</strong> Something went wrong with the download :(</div>";
@@ -179,8 +168,8 @@ $(document).ready(function(){
 			$('#icon-shapefile').removeClass('fa-spinner fa-spin');
 			$('#icon-shapefile').addClass('fa-download');
 
-		})
-	})
+		});
+	});
 
 	$('#download-kml').on('click', function(){
 		$('#download-kml').addClass('disabled');
@@ -207,7 +196,6 @@ $(document).ready(function(){
 			$("#main-flashes").append(alert);
 			$('#icon-kml').removeClass('fa-spinner fa-spin');
 			$('#icon-kml').addClass('fa-download');
-		})
-	})
-})
-
+		});
+	});
+});

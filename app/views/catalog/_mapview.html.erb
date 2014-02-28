@@ -1,27 +1,19 @@
-<h2><%= document['LayerDisplayName'] %></h2>
+<h2><%= document['dc_title_t'] %></h2>
 <!-- <%=local_assigns%> -->
 
 <div class="">
 	<dl class="dl-horizontal">
 		<dt>Data type</dt>
-		<dd><%= document['DataType'] %></dd>
+		<dd><%= document['layer_type_s'] %></dd>
 		<dt>Publisher</dt>
-		<dd><%= document['Publisher'] %></dd>
+		<dd><%= document['dc_publisher_t'] %></dd>
 		<dt>Access</dt>
-		<dd><%= document['Access'].titlecase %></dd>
-		<dt>Availability</dt>
-		<dd><%= document['Availability'].titlecase %></dd>
+		<dd><%= document['dc_rights_s'].titlecase %></dd>
 		<dt>Date</dt>
-		<dd><%= Date.parse(document['ContentDate']).to_formatted_s(:number).slice(0,4) %></dd>
+		<dd><%= date_to_year(document['dc_date_dt']) %></dd>
 		<dt>Institution</dt>
-		<dd><%= document['Institution'] %></dd>
+		<dd><%= document['dc_source_t'] %></dd>
 		<dt>Abstract</dt>
-		<dd id=""><%= abstract_truncator(document['Abstract']) %></dd>
+		<dd id=""><%= abstract_truncator(document['dc_description_t']) %></dd>
 	</dl>
 </div>
-<!-- <div>
-	<%= render 'placename_tags', :keywords => document['PlaceKeywords'] %>
-</div>
-<div>
-	<%= render 'themename_tags', :keywords => document['ThemeKeywords'] %>
-</div> -->
