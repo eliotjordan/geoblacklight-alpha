@@ -3,7 +3,7 @@ class SolrDocument
 
   include Blacklight::Solr::Document
 
-  self.unique_key = 'uuid'
+  self.unique_key = 'id'
 
   # def to_param
   #   URI.encode(self.unique_key)

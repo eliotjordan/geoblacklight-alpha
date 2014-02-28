@@ -29,7 +29,7 @@ class CatalogController < ApplicationController
      ## These are hard-coded in the blacklight 'document' requestHandler
      # :fl => '*',
      # :rows => 1
-     :q => '{!raw f=uuid v=$id}' 
+     :q => '{!raw f=id v=$id}' 
     }
 
     # solr field configuration for search results/index views

@@ -26,14 +26,9 @@ function setupMap(){
 	}).addTo(map);
 }
 
-// function WktBboxToJson(doc){
-// 	return [[doc.layer_sw_latlon_0_f, doc.layer_sw_latlon_1_f], [doc.layer_ne_latlon_0_f, doc.layer_sw_latlon_1_f], [doc.layer_ne_latlon_0_f, doc.layer_ne_latlon_1_f], [doc.layer_sw_latlon_0_f, doc.layer_ne_latlon_1_f]];
-// }
-
-
 //Setup map on doc ready
 $(document).ready(function(){
+    'use strict';
 	setupMap();
 	map.fitBounds(mapBbox);
 });
-

@@ -28,7 +28,7 @@ GEM
     arel (4.0.2)
     atomic (1.1.15)
     bcrypt-ruby (3.1.2)
-    blacklight (5.0.2)
+    blacklight (5.1.0)
       bootstrap-sass (~> 3.0)
       deprecation
       kaminari (~> 0.13)
@@ -151,7 +151,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blacklight (= 5.0.2)
+  blacklight (= 5.1.0)
   blacklight_range_limit
   coffee-rails (~> 4.0.0)
   devise

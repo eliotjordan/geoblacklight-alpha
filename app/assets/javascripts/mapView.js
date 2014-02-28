@@ -17,8 +17,6 @@ function WktBboxToJson(doc){
 	return [[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d], [doc.layer_sw_latlon_0_d, doc.layer_ne_latlon_1_d]];
 }
 
-
-
 function setupMap(){
 	map = L.map('map');
 	console.log(doc)
@@ -45,26 +43,19 @@ function setupMap(){
 			"SERVICE": "WMS",
 			"VERSION": "1.1.1",
 			"REQUEST": "GetFeatureInfo",
-			"LAYERS": doc.layer_name_s,
+			"LAYERS": doc.ogp_name_s,
 			"STYLES": "",
 			"SRS": "EPSG:4326",
 			"BBOX": mapBbox._southWest.lng + "," + mapBbox._southWest.lat + "," + mapBbox._northEast.lng + "," + mapBbox._northEast.lat,
 			"WIDTH": $("#map").width(),
 			"HEIGHT": $("#map").height(),
-			"QUERY_LAYERS": doc.layer_name_s,
+			"QUERY_LAYERS": doc.ogp_name_s,
 			"X": Math.round(e.containerPoint.x),
 			"Y": Math.round(e.containerPoint.y),
 			"EXCEPTIONS": "application/json",
 			"info_dormat": "application/json"
 		}
 		console.log(e);
-
-		// if (doc.Institution == "Stanford"){
-		// 	options["URL"] = "http://kurma-pod1-prod.stanford.edu/geoserver/wms"
-		// }
-		// if (location.wms[0].length < 2){
-		// 	options["URL"] = location.wms
-		// }
 
 		$.ajax({
 			type: 'POST',
