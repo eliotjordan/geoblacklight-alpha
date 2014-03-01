@@ -9,9 +9,6 @@
 * Detail map view for WMS features
 * Detail map view feature inspection
 * Slugs
-* Download KML
-* Download Shapefile / GeoTIFF
-* Download Metadata
 * Blacklight bookmarks and history
 
 == TODO
@@ -19,6 +16,9 @@
 * Spatial search
 * Spatial relevancy
 * MODS display
+* Download KML
+* Download Shapefile / GeoTIFF
+* Download Metadata
 * Facet by language, projection
 * WMS/WFS links
 * Citation and share buttons
