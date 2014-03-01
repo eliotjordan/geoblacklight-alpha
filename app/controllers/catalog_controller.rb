@@ -80,24 +80,22 @@ class CatalogController < ApplicationController
     # }
 
     config.add_facet_field 'dc_source_s', :label => 'Institution', :limit => 7
-    config.add_facet_field 'layer_type_s', :label => 'Data type', :limit => 5
-    # config.add_facet_field 'ThemeKeywordsExact', :label => 'Themes', :limit => 6
-    # config.add_facet_field 'PlaceKeywordsSynonyms', :label => 'Places', :limit => 6
-    # config.add_facet_field 'PublisherSort', :label => 'Publisher', :limit => 6
-    config.add_facet_field 'dc_rights_s', :label => 'Access', :limit => 3
-    config.add_facet_field 'dc_coverage_sm', :label => 'Place', :limit => 6
-    config.add_facet_field 'dc_format_s', :label => 'Format', :limit => 3
-    config.add_facet_field 'dc_language_s', :label => 'Language', :limit => 3
     config.add_facet_field 'dc_publisher_s', :label => 'Publisher', :limit => 6
-    config.add_facet_field 'dc_subject_sm', :label => 'Subject', :limit => 6
     config.add_facet_field 'layer_collection_s', :label => 'Collection', :limit => 6
-    config.add_facet_field 'layer_srs_s', :label => 'Projection', :limit => 6
+    config.add_facet_field 'dc_subject_sm', :label => 'Subject', :limit => 6
+    config.add_facet_field 'dc_coverage_sm', :label => 'Place', :limit => 6
 
     config.add_facet_field 'layer_year_i', :label => 'Year', :limit => 10, :range => {
       # :num_segments => 6,
       :assumed_boundaries => [1100, 2015]
       # :segments => true    
     }
+
+    config.add_facet_field 'dc_format_s', :label => 'Format', :limit => 3
+    config.add_facet_field 'layer_type_s', :label => 'Data type', :limit => 5
+    config.add_facet_field 'dc_rights_s', :label => 'Access', :limit => 3
+    config.add_facet_field 'dc_language_s', :label => 'Language', :limit => 3
+    config.add_facet_field 'layer_srs_s', :label => 'Projection', :limit => 6
 
 
     # Have BL send all facet field names to Solr, which has been the default
@@ -127,6 +125,7 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
+    # config.add_show_field 'dc_title_t', :label => 'Title:' 
     # config.add_show_field 'title_display', :label => 'Title:' 
     # config.add_show_field 'title_vern_display', :label => 'Title:' 
     # config.add_show_field 'subtitle_display', :label => 'Subtitle:' 
@@ -216,7 +215,7 @@ class CatalogController < ApplicationController
     # except in the relevancy case).
     config.add_sort_field 'score desc, dc_title_sort asc', :label => 'relevance'
     config.add_sort_field 'layer_year_i desc, dc_title_sort asc', :label => 'year'
-    config.add_sort_field 'dc_publisher_s asc, title_sort asc', :label => 'publisher'
+    config.add_sort_field 'dc_publisher_s asc, dc_title_sort asc', :label => 'publisher'
     config.add_sort_field 'dc_title_sort asc', :label => 'title'
 
     # If there are more than this many search results, no spelling ("did you 

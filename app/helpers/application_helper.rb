@@ -27,6 +27,18 @@ def abstract_truncator(abstract)
 	end
 end
 
+def snippit(text)
+	if (text)
+		if (text.length > 150)
+			text.slice(0,150) + '...'
+		else
+			text
+		end
+	else
+	  ''
+	end
+end
+
 def layer_type_image(type)
 	case type
 	when "Polygon"

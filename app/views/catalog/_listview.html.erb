@@ -5,14 +5,8 @@
 				<div class="">
 					<small>
 						<ul class="list-unstyled">
-<!--							<li>
-								<%= document['dc_title_t'] %>
-							</li>-->
 							<li>
-								<strong>Year:</strong> <%= date_to_year(document['dc_date_dt']) %>
-							</li>
-							<li>
-								<strong>Publisher:</strong> <%= document['dc_publisher_s'] %>
+								<%= document['layer_year_i'] %>. <i><%= document['dc_publisher_s'] %></i>. <%= snippit(document['dc_description_t']) %>
 							</li>
 						</ul>
 					</small>

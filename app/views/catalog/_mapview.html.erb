@@ -11,19 +11,28 @@
     </dd>
 		<dt>Publisher</dt>
 		<dd><%= document['dc_publisher_s'] %></dd>
-		<dt>Date</dt>
-		<dd><%= date_to_year(document['dc_date_dt']) %></dd>
-		<% unless document['layer_collection_s'].nil? %>
-		<dt>Collection</dt>
-		<dd><%= document['layer_collection_s'] %>&nbsp;</dd>
-		<% end %>
+		<dt>Year</dt>
+		<dd><%= document['layer_year_i'] %></dd>
 		<dt>Abstract</dt>
 		<dd id=""><%= abstract_truncator(document['dc_description_t']) %></dd>
-		<% unless document['dc_relation_url'].nil? %>
-		<dt>Citation</dt>
-		<dd>
-		  <%= link_to document['dc_relation_url'].split.last, document['dc_relation_url'].split.last %>
-		  &nbsp;</dd>
+		<% unless document['layer_collection_s'].nil? %>
+		  <dt>Collection</dt>
+		  <dd><%= document['layer_collection_s'] %>&nbsp;</dd>
 		<% end %>
+		<% unless document['dc_relation_url'].nil? %>
+		  <dt>Citation</dt>
+		  <dd>
+		    <%= link_to document['dc_relation_url'].split.last, document['dc_relation_url'].split.last %>
+		    &nbsp;</dd>
+		<% end %>
+		<% unless document['dc_coverage_sm'].nil? %>
+		  <dt>Places</dt>
+		  <dd><%= document['dc_coverage_sm'].join(', ') %></dd>
+		<% end %>
+		<% unless document['dc_subject_sm'].nil? %>
+		  <dt>Subjects</dt>
+		  <dd><%= document['dc_subject_sm'].join(', ') %></dd>
+		<% end %>
+		
 	</dl>
 </div>
