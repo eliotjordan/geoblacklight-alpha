@@ -1,28 +1,26 @@
-== README
+== Features
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Text search with scoring formula
+* Facet by institution, year, publisher, data type, access, format
+* Facet by place, subject, collection
+* Sort by relevance, year, publisher, title
+* Results list map view of bounding boxes
+* Results list view icons and snippets
+* Detail map view for WMS features
+* Detail map view feature inspection
+* Slugs
+* Download KML
+* Download Shapefile / GeoTIFF
+* Download Metadata
+* Blacklight bookmarks and history
 
-Things you may want to cover:
+== TODO
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+* Spatial search
+* Spatial relevancy
+* MODS display
+* Facet by language, projection
+* WMS/WFS links
+* Citation and share buttons
+* Login for persistent bookmarks and history
+* Featured datasets and articles
