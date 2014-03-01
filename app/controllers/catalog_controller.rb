@@ -80,7 +80,7 @@ class CatalogController < ApplicationController
     # }
 
     config.add_facet_field 'dc_source_s', :label => 'Institution', :limit => 7
-    config.add_facet_field 'layer_type_s', :label => 'Data type', :limit => 4
+    config.add_facet_field 'layer_type_s', :label => 'Data type', :limit => 5
     # config.add_facet_field 'ThemeKeywordsExact', :label => 'Themes', :limit => 6
     # config.add_facet_field 'PlaceKeywordsSynonyms', :label => 'Places', :limit => 6
     # config.add_facet_field 'PublisherSort', :label => 'Publisher', :limit => 6
@@ -159,9 +159,10 @@ class CatalogController < ApplicationController
     # This one uses all the defaults set by the solr request handler. Which
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise. 
-    
-    config.add_search_field 'all_fields', :label => 'All Fields'
-    
+
+    # config.add_search_field 'text', :label => 'All Fields'
+    # config.add_search_field 'dc_title_t', :label => 'Title'
+    # config.add_search_field 'dc_description_t', :label => 'Description'    
 
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
@@ -213,10 +214,10 @@ class CatalogController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_sort_field 'score desc, dc_date_dt desc, dc_title_t asc', :label => 'relevance'
-    config.add_sort_field 'layer_year_i desc, dc_title_t asc', :label => 'year'
-    # config.add_sort_field 'author_sort asc, title_sort asc', :label => 'author'
-    config.add_sort_field 'dc_title_t asc, layer_year_i desc', :label => 'title'
+    config.add_sort_field 'score desc, dc_title_sort asc', :label => 'relevance'
+    config.add_sort_field 'layer_year_i desc, dc_title_sort asc', :label => 'year'
+    config.add_sort_field 'dc_publisher_s asc, title_sort asc', :label => 'publisher'
+    config.add_sort_field 'dc_title_sort asc', :label => 'title'
 
     # If there are more than this many search results, no spelling ("did you 
     # mean") suggestion is offered.

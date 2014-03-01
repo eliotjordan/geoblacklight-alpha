@@ -6,14 +6,24 @@
 		<dt>Data type</dt>
 		<dd><%= document['layer_type_s'] %></dd>
 		<dt>Publisher</dt>
-		<dd><%= document['dc_publisher_t'] %></dd>
+		<dd><%= document['dc_publisher_s'] %></dd>
 		<dt>Access</dt>
 		<dd><%= document['dc_rights_s'].titlecase %></dd>
 		<dt>Date</dt>
 		<dd><%= date_to_year(document['dc_date_dt']) %></dd>
 		<dt>Institution</dt>
-		<dd><%= document['dc_source_t'] %></dd>
+		<dd><%= document['dc_source_s'] %></dd>
+		<% unless document['layer_collection_s'].nil? %>
+		<dt>Collection</dt>
+		<dd><%= document['layer_collection_s'] %>&nbsp;</dd>
+		<% end %>
 		<dt>Abstract</dt>
 		<dd id=""><%= abstract_truncator(document['dc_description_t']) %></dd>
+		<% unless document['dc_relation_url'].nil? %>
+		<dt>Citation</dt>
+		<dd>
+		  <%= link_to document['dc_relation_url'].split.last, document['dc_relation_url'].split.last %>
+		  &nbsp;</dd>
+		<% end %>
 	</dl>
 </div>
