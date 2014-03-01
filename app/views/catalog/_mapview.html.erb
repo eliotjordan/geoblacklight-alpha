@@ -10,11 +10,11 @@
     <%= layer_access_image(document['dc_rights_s']) %>
     </dd>
 		<dt>Publisher</dt>
-		<dd><%= document['dc_publisher_s'] %></dd>
+		<dd><%= document['dc_publisher_s'] %>&nbsp;</dd>
 		<dt>Year</dt>
-		<dd><%= document['layer_year_i'] %></dd>
+		<dd><%= document['layer_year_i'] %>&nbsp;</dd>
 		<dt>Abstract</dt>
-		<dd id=""><%= abstract_truncator(document['dc_description_t']) %></dd>
+		<dd id=""><%= abstract_truncator(document['dc_description_t']) %>&nbsp;</dd>
 		<% unless document['layer_collection_s'].nil? %>
 		  <dt>Collection</dt>
 		  <dd><%= document['layer_collection_s'] %>&nbsp;</dd>
@@ -27,11 +27,11 @@
 		<% end %>
 		<% unless document['dc_coverage_sm'].nil? %>
 		  <dt>Places</dt>
-		  <dd><%= document['dc_coverage_sm'].join(', ') %></dd>
+		  <dd><%= document['dc_coverage_sm'].join(', ') %>&nbsp;</dd>
 		<% end %>
 		<% unless document['dc_subject_sm'].nil? %>
 		  <dt>Subjects</dt>
-		  <dd><%= document['dc_subject_sm'].join(', ') %></dd>
+		  <dd><%= document['dc_subject_sm'].join(', ') %>&nbsp;</dd>
 		<% end %>
 		
 	</dl>
