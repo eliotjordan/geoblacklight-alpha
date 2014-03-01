@@ -3,7 +3,7 @@ class SolrDocument
 
   include Blacklight::Solr::Document
 
-  self.unique_key = 'id'
+  self.unique_key = 'layer_slug_s'
 
   # def to_param
   #   URI.encode(self.unique_key)

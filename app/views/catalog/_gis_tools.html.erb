@@ -34,9 +34,9 @@
     <a href="#" id="download-shapefile" data-no-turbolink class="list-group-item">
       <i class="fa fa-li fa-download" id="icon-shapefile"></i>Shapefile
     </a>
-    <% if @document['Institution'] == 'Stanford' %>
-      <%= link_to metadata_helper, "http://purl.stanford.edu/#{@document['LayerId']}", :class => "list-group-item"%>
-    <% end %>
+    <a href="#" id="download-metadata" data-no-turbolink class="list-group-item">
+      <i class="fa fa-li fa-download" id="icon-metadata"></i>Metadata
+    </a>  
   </ul>
   <ul class="list-group">
     <a href="#" data-no-turbolink class="list-group-item">
