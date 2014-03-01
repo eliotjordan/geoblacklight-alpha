@@ -85,6 +85,13 @@ class CatalogController < ApplicationController
     # config.add_facet_field 'PlaceKeywordsSynonyms', :label => 'Places', :limit => 6
     # config.add_facet_field 'PublisherSort', :label => 'Publisher', :limit => 6
     config.add_facet_field 'dc_rights_s', :label => 'Access', :limit => 3
+    config.add_facet_field 'dc_coverage_sm', :label => 'Place', :limit => 6
+    config.add_facet_field 'dc_format_s', :label => 'Format', :limit => 3
+    config.add_facet_field 'dc_language_s', :label => 'Language', :limit => 3
+    config.add_facet_field 'dc_publisher_s', :label => 'Publisher', :limit => 6
+    config.add_facet_field 'dc_subject_sm', :label => 'Subject', :limit => 6
+    config.add_facet_field 'layer_collection_s', :label => 'Collection', :limit => 6
+    config.add_facet_field 'layer_srs_s', :label => 'Projection', :limit => 6
 
     config.add_facet_field 'layer_year_i', :label => 'Year', :limit => 10, :range => {
       # :num_segments => 6,
