@@ -22,7 +22,7 @@
 		<% unless document['dc_relation_url'].nil? %>
 		  <dt>Citation</dt>
 		  <dd>
-		    <%= link_to document['dc_relation_url'].split.last, document['dc_relation_url'].split.last %>
+		    <%= link_to document['dc_relation_url'], document['dc_relation_url'] %>
 		    &nbsp;</dd>
 		<% end %>
 		<% unless document['dc_coverage_sm'].nil? %>
@@ -32,6 +32,12 @@
 		<% unless document['dc_subject_sm'].nil? %>
 		  <dt>Subjects</dt>
 		  <dd><%= document['dc_subject_sm'].join(', ') %>&nbsp;</dd>
+		<% end %>
+		<% unless document['layer_preview_image_url'].nil? %>
+		  <dt>Preview</dt>
+		  <dd>
+		    <%= link_to document['layer_preview_image_url'], document['layer_preview_image_url'] %>
+		    &nbsp;</dd>
 		<% end %>
 		
 	</dl>

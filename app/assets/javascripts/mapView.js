@@ -14,7 +14,7 @@ var serialiseObject = function (obj) {
 };
 
 function WktBboxToJson(doc){
-	return [[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d], [doc.layer_sw_latlon_0_d, doc.layer_ne_latlon_1_d]];
+	return [[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d], [doc.layer_sw_pt_0_d, doc.layer_ne_pt_1_d]];
 }
 
 function setupMap(){
@@ -24,8 +24,8 @@ function setupMap(){
 	// var location = JSON.parse(doc.Location);
 	if (doc.layer_bbox){
 		layerBbox = WktBboxToJson(doc);
-		// console.log([[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d]])
-		map.fitBounds([[doc.layer_sw_latlon_0_d, doc.layer_sw_latlon_1_d], [doc.layer_ne_latlon_0_d, doc.layer_ne_latlon_1_d]]);
+		// console.log([[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d]])
+		map.fitBounds([[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d]]);
 	}
 
 	var basemap = L.tileLayer('https://a.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png', {
