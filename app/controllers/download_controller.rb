@@ -24,13 +24,13 @@ class DownloadController < ApplicationController
   def shapefile
  
 		puts session['session_id']
-		uuid = params['uuid']
+		uuid = params['layer_slug_s']
 		layername = params['layer_id_s']
 		wfsurl = params['layer_wfs_url']
 		
   	params = {:service => 'wfs', :version => '2.0.0', :request => 'GetFeature', :srsName => 'EPSG:4326', :outputformat => 'SHAPE-ZIP', :typeName => layername}
   	
-		token = SecureRandom.base64(8).tr('+/=lIO0', 'abc123')
+    # token = SecureRandom.base64(8).tr('+/=lIO0', 'abc123')
 		error = ''
 
 		if !Dir.exists?('tmp/data')
@@ -63,13 +63,12 @@ class DownloadController < ApplicationController
   end
 
   def kml
-  	
 		layername = params['layer_id_s']
 		puts layername
-		bbox = [params['layer_sw_latlon_1_d'], params['layer_sw_latlon_0_d'], params['layer_ne_latlon_1_d'], params['layer_ne_latlon_0_d']]
+		bbox = [params['layer_sw_pt_1_d'], params['layer_sw_pt_0_d'], params['layer_ne_pt_1_d'], params['layer_ne_pt_0_d']]
 		bbox = bbox.join(',')
 		wmsurl = params['layer_wms_url']
-		uuid = params['uuid']
+		uuid = params['layer_slug_s']
 		puts bbox
 
   	params = {:service => 'wms', :version => '1.1.0', :request => 'GetMap', :srsName => 'EPSG:900913', :format => 'application/vnd.google-earth.kmz', :layers => layername, :bbox => bbox, :width => 2000, :height => 2000}
@@ -92,7 +91,7 @@ class DownloadController < ApplicationController
 					end
 			end
 		else
-			puts "#{uuid}.kmz alread exists"
+			puts "#{uuid}.kmz already exists"
 		end
   	respond_to do |format|
   		if error.length > 0
