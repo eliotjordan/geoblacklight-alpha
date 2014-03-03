@@ -1,14 +1,13 @@
-<h2><%= document['dc_title_t'] %></h2>
+<h2><%= document['dc_title_t'] %>
+<small><%= layer_type_image(document['layer_geom_type_s']) %>
+<%= layer_institution_image(document['dc_source_s']) %>
+<%= layer_access_image(document['dc_rights_s']) %>
+</small></h2>
 <!-- <%=local_assigns%> -->
 
 <div class="">
 
 	<dl class="dl-horizontal">
-	  <dt>&nbsp;</dt>
-	  <dd><%= layer_type_image(document['layer_geom_type_s']) %>
-    <%= layer_institution_image(document['dc_source_s']) %>
-    <%= layer_access_image(document['dc_rights_s']) %>
-    </dd>
 		<dt>Publisher</dt>
 		<dd><%= document['dc_publisher_s'] %>&nbsp;</dd>
 		<dt>Year</dt>
