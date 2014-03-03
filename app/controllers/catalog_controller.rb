@@ -92,7 +92,7 @@ class CatalogController < ApplicationController
     }
 
     config.add_facet_field 'dc_format_s', :label => 'Format', :limit => 3
-    config.add_facet_field 'layer_type_s', :label => 'Data type', :limit => 5
+    config.add_facet_field 'layer_geom_type_s', :label => 'Data type', :limit => 5
     config.add_facet_field 'dc_rights_s', :label => 'Access', :limit => 3
     config.add_facet_field 'dc_language_s', :label => 'Language', :limit => 3
     config.add_facet_field 'layer_srs_s', :label => 'Projection', :limit => 6
