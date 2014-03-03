@@ -89,6 +89,7 @@ function setupMap(){
 			layers: doc.layer_id_s,
 			format: 'image/png',
 			transparent: true,  //so this seems to work for Stanford and Harvard
+			tiled: true,
 			CRS: crs
 		}).addTo(map);
 	}else{
