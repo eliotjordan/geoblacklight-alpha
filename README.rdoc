@@ -18,6 +18,7 @@
 * MODS display
 * Download KML
 * Download Shapefile / GeoTIFF
+* Clip to map view for download
 * Download Metadata
 * Facet by language, projection, collection
 * WMS/WFS links

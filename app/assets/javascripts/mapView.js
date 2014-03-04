@@ -81,10 +81,7 @@ function setupMap(){
 	
 
 	var crs = "EPSG:900913";
-	if (doc.dc_source_s === 'Tufts'){
-		crs = "EPSG:900913";
-	}
-	if (doc.layer_geom_type_s !== 'LibraryRecord' && (doc.dc_rights_s == 'Public' || doc.dc_source_s == 'Stanford')){
+	if (doc.layer_wms_url && doc.layer_id_s && (doc.dc_rights_s == 'Public' || doc.dc_source_s == 'Stanford')){
 		wmsLayer = L.tileLayer.wms(doc.layer_wms_url, {
 			layers: doc.layer_id_s,
 			format: 'image/png',
