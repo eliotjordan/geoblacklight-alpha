@@ -10,6 +10,7 @@
 * Detail map view feature inspection
 * Slugs
 * Blacklight bookmarks and history
+* WMS/WFS/WCS links
 
 == TODO
 
@@ -19,10 +20,10 @@
 * Download KML
 * Download Shapefile / GeoTIFF
 * Clip to map view for download
-* Download Metadata
+* Download Metadata (for non-Stanford, MODS for Stanford)
 * Facet by language, projection, collection
-* WMS/WFS links
 * Citation and share buttons
 * Login for persistent bookmarks and history
 * Featured datasets and articles
 * FGDC-based conversion of external OGP records
+* MODS-based conversion for Stanford records

@@ -58,9 +58,15 @@
     <a href="<%= @document['layer_wms_url'] %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
       <i class="fa fa-li fa-link"></i>WMS Link
     </a>
+    <% if @document['layer_geom_type_s'] == 'Raster' %>
+      <a href="<%= @document['layer_wcs_url'] %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
+        <i class="fa fa-li fa-link"></i>WCS Link
+      </a>
+      <% else %>
     <a href="<%= @document['layer_wfs_url'] %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
       <i class="fa fa-li fa-link"></i>WFS Link
     </a>
+    <% end %>
   </ul>
   <% end %>
   </div>
