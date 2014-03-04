@@ -9,16 +9,17 @@ class CatalogController < ApplicationController
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = { 
       # :qt => 'query',
+      :start => 0,
       :rows => 10,
       # :defType => 'dismax',
       # :df => 'text',
       # :q => 'text',
       # :fq => ['layer_bbox'],
       # :fq => ['layer_bbox:"IsWithin(-88 26 -79 36)"'],
-      :sort => 'score desc'
+      # :sort => 'score desc'
       # :qf => 'ThemeKeywordsExact',
       # :pf => 'LayerDisplayName^10',
-      # 'q.alt' => '*:*'
+      'q.alt' => '*:*'
     }
 
     ## Default parameters to send on single-document requests to Solr. These settings are the Blackligt defaults (see SolrHelper#solr_doc_params) or 
@@ -36,7 +37,7 @@ class CatalogController < ApplicationController
     # config.index.show_link = 'title_display'
     # config.index.record_display_type = 'format'
 
-    config.index.title_field = 'dc_title_t'
+    config.index.title_field = 'dc_title_s'
 
     # solr field configuration for document/show views
     
@@ -80,10 +81,11 @@ class CatalogController < ApplicationController
     # }
 
     config.add_facet_field 'dc_source_s', :label => 'Institution', :limit => 7
+    config.add_facet_field 'dc_creator_s', :label => 'Author', :limit => 6
     config.add_facet_field 'dc_publisher_s', :label => 'Publisher', :limit => 6
     config.add_facet_field 'layer_collection_s', :label => 'Collection', :limit => 6
     config.add_facet_field 'dc_subject_sm', :label => 'Subject', :limit => 6
-    config.add_facet_field 'dc_coverage_sm', :label => 'Place', :limit => 6
+    config.add_facet_field 'dc_coverage_spatial_sm', :label => 'Place', :limit => 6
 
     config.add_facet_field 'layer_year_i', :label => 'Year', :limit => 10, :range => {
       # :num_segments => 6,
@@ -160,8 +162,8 @@ class CatalogController < ApplicationController
     # since we aren't specifying it otherwise. 
 
     # config.add_search_field 'text', :label => 'All Fields'
-    # config.add_search_field 'dc_title_t', :label => 'Title'
-    # config.add_search_field 'dc_description_t', :label => 'Description'    
+    # config.add_search_field 'dc_title_ti', :label => 'Title'
+    # config.add_search_field 'dc_description_ti', :label => 'Description'    
 
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
@@ -215,8 +217,10 @@ class CatalogController < ApplicationController
     # except in the relevancy case).
     config.add_sort_field 'score desc, dc_title_sort asc', :label => 'relevance'
     config.add_sort_field 'layer_year_i desc, dc_title_sort asc', :label => 'year'
-    config.add_sort_field 'dc_publisher_s asc, dc_title_sort asc', :label => 'publisher'
+    config.add_sort_field 'dc_creator_sort asc, dc_title_sort asc', :label => 'author'
+    config.add_sort_field 'dc_publisher_sort asc, dc_title_sort asc', :label => 'publisher'
     config.add_sort_field 'dc_title_sort asc', :label => 'title'
+    config.add_sort_field 'layer_collection_sort asc, dc_title_sort asc', :label => 'collection'
 
     # If there are more than this many search results, no spelling ("did you 
     # mean") suggestion is offered.

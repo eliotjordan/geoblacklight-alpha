@@ -45,6 +45,12 @@
 <br>
 <br>
 <hr/>
-<p align="right"><small><a href="#">Librarian View</a></small></p>
+<p align="right"><small>
+<% if @document['dc_source_s'] == 'Stanford' %>
+  <a href="<%= @document['dc_relation_url'] %>.mods">
+  <% else %>
+  <a href="#">
+  <% end %>
+Librarian View</a></small></p>
 <%= javascript_tag "var doc = #{@document.to_json};" %>
 <%= javascript_include_tag 'mapView' %>

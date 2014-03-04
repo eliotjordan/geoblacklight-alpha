@@ -87,7 +87,8 @@ function setupMap(){
 			format: 'image/png',
 			transparent: true,  //so this seems to work for Stanford and Harvard
 			tiled: true,
-			CRS: crs
+			CRS: crs,
+			opacity: 0.75
 		}).addTo(map);
 	}else{
 		L.polygon(layerBbox).addTo(map);

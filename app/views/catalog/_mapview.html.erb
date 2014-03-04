@@ -1,4 +1,4 @@
-<h2><%= document['dc_title_t'] %>
+<h2><%= document['dc_title_s'] %>
 <small><%= layer_type_image(document['layer_geom_type_s']) %>
 <%= layer_institution_image(document['dc_source_s']) %>
 <%= layer_access_image(document['dc_rights_s']) %>
@@ -8,12 +8,14 @@
 <div class="">
 
 	<dl class="dl-horizontal">
+  	<dt>Author</dt>
+  	<dd><%= document['dc_creator_s'] %>&nbsp;</dd>
 		<dt>Publisher</dt>
 		<dd><%= document['dc_publisher_s'] %>&nbsp;</dd>
 		<dt>Year</dt>
 		<dd><%= document['layer_year_i'] %>&nbsp;</dd>
 		<dt>Abstract</dt>
-		<dd id=""><%= abstract_truncator(document['dc_description_t']) %>&nbsp;</dd>
+		<dd id=""><%= abstract_truncator(document['dc_description_s']) %>&nbsp;</dd>
 		<% unless document['layer_collection_s'].nil? %>
 		  <dt>Collection</dt>
 		  <dd><%= document['layer_collection_s'] %>&nbsp;</dd>
@@ -24,19 +26,13 @@
 		    <%= link_to document['dc_relation_url'], document['dc_relation_url'] %>
 		    &nbsp;</dd>
 		<% end %>
-		<% unless document['dc_coverage_sm'].nil? %>
+		<% unless document['dc_coverage_spatial_sm'].nil? %>
 		  <dt>Places</dt>
-		  <dd><%= document['dc_coverage_sm'].join(', ') %>&nbsp;</dd>
+		  <dd><%= document['dc_coverage_spatial_sm'].sort.join(', ') %>&nbsp;</dd>
 		<% end %>
 		<% unless document['dc_subject_sm'].nil? %>
 		  <dt>Subjects</dt>
-		  <dd><%= document['dc_subject_sm'].join(', ') %>&nbsp;</dd>
-		<% end %>
-		<% unless document['layer_preview_image_url'].nil? %>
-		  <dt>Preview</dt>
-		  <dd>
-		    <%= link_to document['layer_preview_image_url'], document['layer_preview_image_url'] %>
-		    &nbsp;</dd>
+		  <dd><%= document['dc_subject_sm'].sort.join(', ') %>&nbsp;</dd>
 		<% end %>
 		
 	</dl>

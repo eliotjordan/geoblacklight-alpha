@@ -3,7 +3,7 @@
 * Text search with scoring formula
 * Facet by institution, year, publisher, data type, access, format
 * Facet by place, subject
-* Sort by relevance, year, publisher, title
+* Sort by relevance, year, publisher, title, collection
 * Results list map view of bounding boxes
 * Results list view icons and snippets
 * Detail map view for WMS features
