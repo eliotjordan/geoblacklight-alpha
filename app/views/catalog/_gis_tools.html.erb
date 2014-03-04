@@ -28,16 +28,26 @@
     </a>
   </ul>
   <ul class="list-group">
-    <a href="#" id="download-kml" data-no-turbolink class="list-group-item">
-      <i class="fa fa-li fa-download" id="icon-kml"></i>KML
-    </a>
-    <a href="#" id="download-shapefile" data-no-turbolink class="list-group-item">
-      <i class="fa fa-li fa-download" id="icon-shapefile"></i><%= @document['dc_format_s'] %>
-    </a>
-    <a href="#" id="download-metadata" data-no-turbolink class="list-group-item">
-      <i class="fa fa-li fa-download" id="icon-metadata"></i>Metadata
-    </a>  
+  <a href="#" id="download-metadata" data-no-turbolink class="list-group-item">
+    <i class="fa fa-li fa-download" id="icon-metadata"></i>Metadata
+  </a>
+  <% if @document['dc_rights_s'] == 'Restricted' and @document['dc_source_s'] != 'Stanford' %>
+    <a href="#" data-no-turbolink class="list-group-item">
+      <i class="fa fa-li fa-download" id="icon-request"></i>Request This
+    </a><br/>
+    
+  <% else %>
+  <a href="#" id="download-kml" data-no-turbolink class="list-group-item">
+    <i class="fa fa-li fa-download" id="icon-kml"></i>KML
+  </a>
+  <a href="#" id="download-shapefile" data-no-turbolink class="list-group-item">
+    <i class="fa fa-li fa-download" id="icon-shapefile"></i><%= @document['dc_format_s'] %>
+  </a>
+  <% end %>
+ 
   </ul>
+  <% unless @document['dc_rights_s'] == 'Restricted' and @document['dc_source_s'] != 'Stanford' %>
+  
   <ul class="list-group">
     <a href="#" data-no-turbolink class="list-group-item">
       <i class="fa fa-li fa-link"></i>WMS Link
@@ -46,5 +56,6 @@
       <i class="fa fa-li fa-link"></i>WFS Link
     </a>
   </ul>
+  <% end %>
   </div>
 </div>
