@@ -28,7 +28,13 @@
     </a>
   </ul>
   <ul class="list-group">
-  <a href="#" id="download-metadata" data-no-turbolink class="list-group-item">
+  <a id="download-metadata" data-no-turbolink class="list-group-item"
+    <% if @document['dc_source_s'] == 'Stanford' %>
+    href="<%= @document['dc_relation_url'] %>.mods"
+    <% else %>
+    href="#" 
+    <% end %>
+    >
     <i class="fa fa-li fa-download" id="icon-metadata"></i>Metadata
   </a>
   <% if @document['dc_rights_s'] == 'Restricted' and @document['dc_source_s'] != 'Stanford' %>
