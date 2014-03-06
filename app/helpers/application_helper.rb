@@ -46,7 +46,7 @@ def layer_type_image(type)
 	when "Line"
 		image_tag('ogp/type_arc.png', 'data-toggle' => 'tooltip', title: 'Line', :class => 'tooltip-icon')
 	when "Point"
-		image_tag('ogp/type_dots.png', 'data-toggle' => 'tooltip', title: 'Point', :class => 'tooltip-icon')
+		image_tag('ogp/type_dot.png', 'data-toggle' => 'tooltip', title: 'Point', :class => 'tooltip-icon')
 	when "Raster"
 		image_tag('ogp/type_raster.png', 'data-toggle' => 'tooltip', title: 'Raster', :class => 'tooltip-icon')
 	when "Paper Map"
