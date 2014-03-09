@@ -37,21 +37,21 @@
 }
 
 #map.mapview-map {
-	height: 440px;
+  height: 440px;
   cursor: crosshair;
 }
 
 #map.listview-map {
-	height: 485px;
+  height: 485px;
 }
 
 #table-container{
-	overflow:scroll;
-	max-height: 450px;
+  overflow:scroll;
+  max-height: 450px;
 }
 
 #control {
-	text-align: center;
+  text-align: center;
   background: #FFF;
   position: absolute;
   left: 24px;
@@ -74,10 +74,10 @@
 }
 
 #bottom {
-	position: absolute;
-	bottom:0px;
-	left: 8px;
-	text-align: center;
+  position: absolute;
+  bottom:0px;
+  left: 8px;
+  text-align: center;
 }
 
 #handle:hover {

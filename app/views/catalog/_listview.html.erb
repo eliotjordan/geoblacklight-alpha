@@ -1,60 +1,60 @@
 <div class="row" data-layer="<%= document['uuid'] %>">
-	<div class="col-md-12">
-		<div class="" data-layer="<%= document['uuid'] %>-accordion">
-			<div data-layer="<%= document['uuid'] %>-collapse" class="panel-collapse collapse">
-				<div class="">
-					<small>
-						<ul class="list-unstyled">
-							<li>
-								<%= document['layer_year_i'] %>. <i><%= document['dc_creator_s'] %></i>. <%= snippit(document['dc_description_s']) %>. <%= document['dc_publisher_s'] %>.
-							</li>
-						</ul>
-					</small>
-				</div>
-				<br>
+  <div class="col-md-12">
+    <div class="" data-layer="<%= document['uuid'] %>-accordion">
+      <div data-layer="<%= document['uuid'] %>-collapse" class="panel-collapse collapse">
+        <div class="">
+          <small>
+            <ul class="list-unstyled">
+              <li>
+                <%= document['layer_year_i'] %>. <i><%= document['dc_creator_s'] %></i>. <%= snippit(document['dc_description_s']) %>. <%= document['dc_publisher_s'] %>.
+              </li>
+            </ul>
+          </small>
+        </div>
+        <br>
 
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
-	$(document).ready(function(){
-		var doc = docs[<%= document_counter %>];
-		//Calculates map bounding box and creates layer bbox
-		if (doc.layer_bbox){
-			bBoxs[<%= document_counter %>] = L.polygon([[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d], [doc.layer_sw_pt_0_d, doc.layer_ne_pt_1_d]]);
-			// console.log(bBoxs)
-			if (mapBbox.length == 0){
-				mapBbox = [[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d]];
-			}else{
-				if (doc.layer_sw_pt_0_d < mapBbox[0][0]){
-					mapBbox[0][0] = doc.layer_sw_pt_0_d;
-				}
-				if (doc.layer_sw_pt_1_d < mapBbox[0][1]){
-					mapBbox[0][1] = doc.layer_sw_pt_1_d;
-				}
-				if (doc.layer_ne_pt_0_d > mapBbox[1][0]){
-					mapBbox[1][0] = doc.layer_ne_pt_0_d;
-				}
-				if (doc.layer_ne_pt_1_d > mapBbox[1][1]){
-					mapBbox[1][1] = doc.layer_ne_pt_1_d;
-				}
-			}
-		}
+  $(document).ready(function(){
+    var doc = docs[<%= document_counter %>];
+    //Calculates map bounding box and creates layer bbox
+    if (doc.layer_bbox){
+      bBoxs[<%= document_counter %>] = L.polygon([[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d], [doc.layer_sw_pt_0_d, doc.layer_ne_pt_1_d]]);
+      // console.log(bBoxs)
+      if (mapBbox.length == 0){
+        mapBbox = [[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d]];
+      }else{
+        if (doc.layer_sw_pt_0_d < mapBbox[0][0]){
+          mapBbox[0][0] = doc.layer_sw_pt_0_d;
+        }
+        if (doc.layer_sw_pt_1_d < mapBbox[0][1]){
+          mapBbox[0][1] = doc.layer_sw_pt_1_d;
+        }
+        if (doc.layer_ne_pt_0_d > mapBbox[1][0]){
+          mapBbox[1][0] = doc.layer_ne_pt_0_d;
+        }
+        if (doc.layer_ne_pt_1_d > mapBbox[1][1]){
+          mapBbox[1][1] = doc.layer_ne_pt_1_d;
+        }
+      }
+    }
 });
 
 
 $("*[data-layer=\"<%= document['uuid']%>\"]").click(function(){
-	$("*[data-layer=\"<%= document['uuid']%>-collapse\"]").collapse("toggle")
+  $("*[data-layer=\"<%= document['uuid']%>-collapse\"]").collapse("toggle")
 })
 
 $("*[data-layer=\"<%= document['uuid']%>\"]").mouseover(function(){
-	if (bBoxs[<%= document_counter %>]){
-		bBoxs[<%= document_counter %>].addTo(map);
-	}
+  if (bBoxs[<%= document_counter %>]){
+    bBoxs[<%= document_counter %>].addTo(map);
+  }
 });
 $("*[data-layer=\"<%= document['uuid']%>\"]").mouseout(function(){
-	for(i in map._layers) {
+  for(i in map._layers) {
         if(map._layers[i]._path !== undefined && i !== 0) {
             try {
                 map.removeLayer(map._layers[i]);
