@@ -14,21 +14,21 @@ var serialiseObject = function(obj) {
 
 
 function setupMap(){
-	map = L.map('map').setView([0,0],1);
-	
+  map = L.map('map').setView([0,0],1);
+  
 
-	var wmsServer;
+  var wmsServer;
 
-	
-	var basemap = L.tileLayer('https://a.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png', {
+  
+  var basemap = L.tileLayer('https://a.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     maxZoom: 18
-	}).addTo(map);
+  }).addTo(map);
 }
 
 //Setup map on doc ready
 $(document).ready(function(){
     'use strict';
-	setupMap();
-	map.fitBounds(mapBbox);
+  setupMap();
+  map.fitBounds(mapBbox);
 });
