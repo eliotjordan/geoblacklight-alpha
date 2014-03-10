@@ -15,6 +15,7 @@
 //= require turbolinks
 //
 //= require leaflet
+//= require analytics
 //
 // Required by Blacklight
 //= require blacklight/blacklight
