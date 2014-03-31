@@ -53,7 +53,7 @@ function setupMap(){
       "X": Math.round(e.containerPoint.x),
       "Y": Math.round(e.containerPoint.y),
       "EXCEPTIONS": "application/json",
-      "info_dormat": "application/json"
+      "info_format": "application/json"
     }
     console.log(e);
 
