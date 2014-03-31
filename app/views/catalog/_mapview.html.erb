@@ -8,10 +8,14 @@
 <div class="">
 
   <dl class="dl-horizontal">
-    <dt>Author</dt>
-    <dd><%= document['dc_creator_s'] %>&nbsp;</dd>
-    <dt>Publisher</dt>
-    <dd><%= document['dc_publisher_s'] %>&nbsp;</dd>
+    <% unless document['dc_creator_sm'].nil? %>
+      <dt>Author</dt>
+      <dd><%= document['dc_creator_sm'].join(', ') %>&nbsp;</dd>
+	<% end %>
+    <% unless document['dc_publisher_s'].nil? %>
+      <dt>Publisher</dt>
+      <dd><%= document['dc_publisher_s'].join(', ') %>&nbsp;</dd>
+	<% end %>
     <dt>Year</dt>
     <dd><%= document['layer_year_i'] %>&nbsp;</dd>
     <dt>Abstract</dt>
