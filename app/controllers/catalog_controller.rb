@@ -81,7 +81,7 @@ class CatalogController < ApplicationController
     # }
 
     config.add_facet_field 'dc_source_s', :label => 'Institution', :limit => 7
-    config.add_facet_field 'dc_creator_s', :label => 'Author', :limit => 6
+    config.add_facet_field 'dc_creator_sm', :label => 'Author', :limit => 6
     config.add_facet_field 'dc_publisher_s', :label => 'Publisher', :limit => 6
     config.add_facet_field 'layer_collection_s', :label => 'Collection', :limit => 6
     config.add_facet_field 'dc_subject_sm', :label => 'Subject', :limit => 6
@@ -217,7 +217,7 @@ class CatalogController < ApplicationController
     # except in the relevancy case).
     config.add_sort_field 'score desc, dc_title_sort asc', :label => 'relevance'
     config.add_sort_field 'layer_year_i desc, dc_title_sort asc', :label => 'year'
-    config.add_sort_field 'dc_creator_sort asc, dc_title_sort asc', :label => 'author'
+    # config.add_sort_field 'dc_creator_sort asc, dc_title_sort asc', :label => 'author'
     config.add_sort_field 'dc_publisher_sort asc, dc_title_sort asc', :label => 'publisher'
     config.add_sort_field 'dc_title_sort asc', :label => 'title'
     config.add_sort_field 'layer_collection_sort asc, dc_title_sort asc', :label => 'collection'
