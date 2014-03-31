@@ -1,3 +1,5 @@
+This software is an *ALPHA* prototype only.
+
 == Features
 
 * Text search with scoring formula
