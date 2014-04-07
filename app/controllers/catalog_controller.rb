@@ -14,8 +14,8 @@ class CatalogController < ApplicationController
       # :defType => 'dismax',
       # :df => 'text',
       # :q => 'text',
-      # :fq => ['layer_bbox'],
-      # :fq => ['layer_bbox:"IsWithin(-88 26 -79 36)"'],
+      # :fq => ['solr_bbox'],
+      # :fq => ['solr_bbox:"IsWithin(-88 26 -79 36)"'],
       # :sort => 'score desc'
       # :qf => 'ThemeKeywordsExact',
       # :pf => 'LayerDisplayName^10',
@@ -70,7 +70,7 @@ class CatalogController < ApplicationController
     # config.add_facet_field 'language_facet', :label => 'Language', :limit => true 
     # config.add_facet_field 'lc_1letter_facet', :label => 'Call Number' 
     # config.add_facet_field 'subject_geo_facet', :label => 'Region' 
-    # config.add_facet_field 'layer_bbox', :fq => "layer_bbox:IsWithin(-88,26,-79,36)", :label => 'Spatial'  
+    # config.add_facet_field 'solr_bbox', :fq => "solr_bbox:IsWithin(-88,26,-79,36)", :label => 'Spatial'  
 
     # config.add_facet_field 'example_pivot_field', :label => 'Pivot Field', :pivot => ['format', 'language_facet']
 
@@ -80,24 +80,23 @@ class CatalogController < ApplicationController
     #    :years_25 => { :label => 'within 25 Years', :fq => "pub_date:[#{Time.now.year - 25 } TO *]" }
     # }
 
-    config.add_facet_field 'dc_source_s', :label => 'Institution', :limit => 7
+    config.add_facet_field 'dct_provenance_s', :label => 'Institution', :limit => 7
     config.add_facet_field 'dc_creator_sm', :label => 'Author', :limit => 6
     config.add_facet_field 'dc_publisher_s', :label => 'Publisher', :limit => 6
-    config.add_facet_field 'layer_collection_s', :label => 'Collection', :limit => 6
     config.add_facet_field 'dc_subject_sm', :label => 'Subject', :limit => 6
-    config.add_facet_field 'dc_coverage_spatial_sm', :label => 'Place', :limit => 6
+    config.add_facet_field 'dct_spatial_sm', :label => 'Place', :limit => 6
+    config.add_facet_field 'dct_isPartOf_sm', :label => 'Collection', :limit => 6
 
-    config.add_facet_field 'layer_year_i', :label => 'Year', :limit => 10, :range => {
+    config.add_facet_field 'solr_year_i', :label => 'Year', :limit => 10, :range => {
       # :num_segments => 6,
       :assumed_boundaries => [1100, 2015]
       # :segments => true    
     }
 
-    config.add_facet_field 'dc_format_s', :label => 'Format', :limit => 3
-    config.add_facet_field 'layer_geom_type_s', :label => 'Data type', :limit => 5
     config.add_facet_field 'dc_rights_s', :label => 'Access', :limit => 3
+    config.add_facet_field 'layer_geom_type_s', :label => 'Data type', :limit => 5
+    config.add_facet_field 'dc_format_s', :label => 'Format', :limit => 3
     config.add_facet_field 'dc_language_s', :label => 'Language', :limit => 3
-    config.add_facet_field 'layer_srs_s', :label => 'Projection', :limit => 6
 
 
     # Have BL send all facet field names to Solr, which has been the default
@@ -118,7 +117,7 @@ class CatalogController < ApplicationController
     # config.add_index_field 'lc_callnum_display', :label => 'Call number:'
 
     # config.add_index_field 'dc_title_t', :label => 'Display Name:'
-    # config.add_index_field 'dc_source_s', :label => 'Institution:'
+    # config.add_index_field 'dct_provenance_s', :label => 'Institution:'
     # config.add_index_field 'dc_rights_s', :label => 'Access:'
     # # config.add_index_field 'Area', :label => 'Area:'
     # config.add_index_field 'dc_subject_sm', :label => 'Keywords:'
@@ -216,11 +215,9 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     config.add_sort_field 'score desc, dc_title_sort asc', :label => 'relevance'
-    config.add_sort_field 'layer_year_i desc, dc_title_sort asc', :label => 'year'
-    # config.add_sort_field 'dc_creator_sort asc, dc_title_sort asc', :label => 'author'
+    config.add_sort_field 'solr_year_i desc, dc_title_sort asc', :label => 'year'
     config.add_sort_field 'dc_publisher_sort asc, dc_title_sort asc', :label => 'publisher'
     config.add_sort_field 'dc_title_sort asc', :label => 'title'
-    config.add_sort_field 'layer_collection_sort asc, dc_title_sort asc', :label => 'collection'
 
     # If there are more than this many search results, no spelling ("did you 
     # mean") suggestion is offered.

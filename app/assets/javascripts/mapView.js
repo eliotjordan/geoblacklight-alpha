@@ -14,7 +14,7 @@ var serialiseObject = function (obj) {
 };
 
 function WktBboxToJson(doc){
-  return [[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d], [doc.layer_sw_pt_0_d, doc.layer_ne_pt_1_d]];
+  return [[doc.solr_sw_pt_0_d, doc.solr_sw_pt_1_d], [doc.solr_ne_pt_0_d, doc.solr_sw_pt_1_d], [doc.solr_ne_pt_0_d, doc.solr_ne_pt_1_d], [doc.solr_sw_pt_0_d, doc.solr_ne_pt_1_d]];
 }
 
 function setupMap(){
@@ -22,10 +22,10 @@ function setupMap(){
   console.log(doc)
   // var layerBbox;
   // var location = JSON.parse(doc.Location);
-  if (doc.layer_bbox){
+  if (doc.solr_bbox){
     layerBbox = WktBboxToJson(doc);
-    // console.log([[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d]])
-    map.fitBounds([[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d]]);
+    // console.log([[doc.solr_sw_pt_0_d, doc.solr_sw_pt_1_d], [doc.solr_ne_pt_0_d, doc.solr_ne_pt_1_d]])
+    map.fitBounds([[doc.solr_sw_pt_0_d, doc.solr_sw_pt_1_d], [doc.solr_ne_pt_0_d, doc.solr_ne_pt_1_d]]);
   }
 
   var basemap = L.tileLayer('https://a.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png', {
@@ -39,7 +39,7 @@ function setupMap(){
     // console.log(e)
     mapBbox = map.getBounds()
     var wmsoptions = {
-      "URL": doc.layer_wms_url,
+      "URL": doc.solr_wms_url,
       "SERVICE": "WMS",
       "VERSION": "1.1.1",
       "REQUEST": "GetFeatureInfo",
@@ -81,8 +81,8 @@ function setupMap(){
   
 
   var crs = "EPSG:900913";
-  if (doc.layer_wms_url && doc.layer_id_s && (doc.dc_rights_s == 'Public' || doc.dc_source_s == 'Stanford')){
-    wmsLayer = L.tileLayer.wms(doc.layer_wms_url, {
+  if (doc.solr_wms_url && doc.layer_id_s && (doc.dc_rights_s == 'Public' || doc.dct_provenance_s == 'Stanford')){
+    wmsLayer = L.tileLayer.wms(doc.solr_wms_url, {
       layers: doc.layer_id_s,
       format: 'image/png',
       transparent: true,  //so this seems to work for Stanford and Harvard

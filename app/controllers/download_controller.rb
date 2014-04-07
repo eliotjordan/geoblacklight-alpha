@@ -26,7 +26,7 @@ class DownloadController < ApplicationController
     puts session['session_id']
     uuid = params['layer_slug_s']
     layername = params['layer_id_s']
-    wfsurl = params['layer_wfs_url']
+    wfsurl = params['solr_wfs_url']
     
     params = {:service => 'wfs', :version => '2.0.0', :request => 'GetFeature', :srsName => 'EPSG:4326', :outputformat => 'SHAPE-ZIP', :typeName => layername}
     
@@ -65,9 +65,9 @@ class DownloadController < ApplicationController
   def kml
     layername = params['layer_id_s']
     puts layername
-    bbox = [params['layer_sw_pt_1_d'], params['layer_sw_pt_0_d'], params['layer_ne_pt_1_d'], params['layer_ne_pt_0_d']]
+    bbox = [params['solr_sw_pt_1_d'], params['solr_sw_pt_0_d'], params['solr_ne_pt_1_d'], params['solr_ne_pt_0_d']]
     bbox = bbox.join(',')
-    wmsurl = params['layer_wms_url']
+    wmsurl = params['solr_wms_url']
     uuid = params['layer_slug_s']
     puts bbox
 

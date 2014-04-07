@@ -6,7 +6,7 @@
           <small>
             <ul class="list-unstyled">
               <li>
-                <%= document['layer_year_i'] %>. <i><%= document['dc_creator_sm'].nil?? '' : document['dc_creator_sm'].join(', ') %></i>. <%= snippit(document['dc_description_s']) %>. <%= document['dc_publisher_s'] %>.
+                <%= document['solr_year_i'] %>. <i><%= document['dc_creator_sm'].nil?? '' : document['dc_creator_sm'].join(', ') %></i>. <%= snippit(document['dc_description_s']) %>. <%= document['dc_publisher_s'] %>.
               </li>
             </ul>
           </small>
@@ -21,23 +21,23 @@
   $(document).ready(function(){
     var doc = docs[<%= document_counter %>];
     //Calculates map bounding box and creates layer bbox
-    if (doc.layer_bbox){
-      bBoxs[<%= document_counter %>] = L.polygon([[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d], [doc.layer_sw_pt_0_d, doc.layer_ne_pt_1_d]]);
-      // console.log(bBoxs)
+    if (doc.solr_bbox){
+      bBoxs[<%= document_counter %>] = L.polygon([[doc.solr_sw_pt_0_d, doc.solr_sw_pt_1_d], [doc.solr_ne_pt_0_d, doc.solr_sw_pt_1_d], [doc.solr_ne_pt_0_d, doc.solr_ne_pt_1_d], [doc.solr_sw_pt_0_d, doc.solr_ne_pt_1_d]]);
+      console.log(bBoxs)
       if (mapBbox.length == 0){
-        mapBbox = [[doc.layer_sw_pt_0_d, doc.layer_sw_pt_1_d], [doc.layer_ne_pt_0_d, doc.layer_ne_pt_1_d]];
+        mapBbox = [[doc.solr_sw_pt_0_d, doc.solr_sw_pt_1_d], [doc.solr_ne_pt_0_d, doc.solr_ne_pt_1_d]];
       }else{
-        if (doc.layer_sw_pt_0_d < mapBbox[0][0]){
-          mapBbox[0][0] = doc.layer_sw_pt_0_d;
+        if (doc.solr_sw_pt_0_d < mapBbox[0][0]){
+          mapBbox[0][0] = doc.solr_sw_pt_0_d;
         }
-        if (doc.layer_sw_pt_1_d < mapBbox[0][1]){
-          mapBbox[0][1] = doc.layer_sw_pt_1_d;
+        if (doc.solr_sw_pt_1_d < mapBbox[0][1]){
+          mapBbox[0][1] = doc.solr_sw_pt_1_d;
         }
-        if (doc.layer_ne_pt_0_d > mapBbox[1][0]){
-          mapBbox[1][0] = doc.layer_ne_pt_0_d;
+        if (doc.solr_ne_pt_0_d > mapBbox[1][0]){
+          mapBbox[1][0] = doc.solr_ne_pt_0_d;
         }
-        if (doc.layer_ne_pt_1_d > mapBbox[1][1]){
-          mapBbox[1][1] = doc.layer_ne_pt_1_d;
+        if (doc.solr_ne_pt_1_d > mapBbox[1][1]){
+          mapBbox[1][1] = doc.solr_ne_pt_1_d;
         }
       }
     }

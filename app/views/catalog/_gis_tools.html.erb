@@ -29,15 +29,15 @@
   </ul>
   <ul class="list-group">
   <a id="download-metadata" data-no-turbolink class="list-group-item"
-    <% if @document['dc_source_s'] == 'Stanford' %>
-    href="<%= @document['dc_relation_url'] %>.mods"
+    <% if @document['dct_provenance_s'] == 'Stanford' %>
+    href="<%= @document['dc_identifier_s'] %>.mods"
     <% else %>
     href="#" 
     <% end %>
     >
     <i class="fa fa-li fa-download" id="icon-metadata"></i>Metadata
   </a>
-  <% if @document['dc_rights_s'] == 'Restricted' and @document['dc_source_s'] != 'Stanford' %>
+  <% if @document['dc_rights_s'] == 'Restricted' and @document['dct_provenance_s'] != 'Stanford' %>
     <a href="#" data-no-turbolink class="list-group-item">
       <i class="fa fa-li fa-download" id="icon-request"></i>Request This
     </a><br/>
@@ -52,18 +52,18 @@
   <% end %>
  
   </ul>
-  <% unless @document['dc_rights_s'] == 'Restricted' and @document['dc_source_s'] != 'Stanford' %>
+  <% unless @document['dc_rights_s'] == 'Restricted' and @document['dct_provenance_s'] != 'Stanford' %>
   
   <ul class="list-group">
-    <a href="<%= @document['layer_wms_url'] %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
+    <a href="<%= 'XXX' %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
       <i class="fa fa-li fa-link"></i>WMS Link
     </a>
     <% if @document['layer_geom_type_s'] == 'Raster' %>
-      <a href="<%= @document['layer_wcs_url'] %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
+      <a href="<%= 'XXX' %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
         <i class="fa fa-li fa-link"></i>WCS Link
       </a>
       <% else %>
-    <a href="<%= @document['layer_wfs_url'] %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
+    <a href="<%= 'XXX' %>?request=GetCapabilities" data-no-turbolink class="list-group-item">
       <i class="fa fa-li fa-link"></i>WFS Link
     </a>
     <% end %>

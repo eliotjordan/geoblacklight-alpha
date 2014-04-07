@@ -46,8 +46,8 @@
 <br>
 <hr/>
 <p align="right"><small>
-<% if @document['dc_source_s'] == 'Stanford' %>
-  <a href="<%= @document['dc_relation_url'] %>.mods">
+<% if @document['dct_provenance_s'] == 'Stanford' %>
+  <a href="<%= @document['dc_identifier_s'] %>.mods">
   <% else %>
   <a href="#">
   <% end %>
