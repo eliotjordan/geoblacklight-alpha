@@ -24,6 +24,7 @@
       <dt>Collection</dt>
       <dd><%= document['dct_isPartOf_sm'].sort.join(', ') %>&nbsp;</dd>
     <% end %>
+    <% # XXX: parse out of dct_references_s %>
     <% if document['dct_provenance_s'] == 'Stanford' and not document['dc_identifier_s'].nil? %>
       <dt>Citation</dt>
       <dd>
@@ -37,6 +38,10 @@
     <% unless document['dc_subject_sm'].nil? %>
       <dt>Subjects</dt>
       <dd><%= document['dc_subject_sm'].sort.join(', ') %>&nbsp;</dd>
+    <% end %>
+    <% unless document['dct_temporal_sm'].nil? %>
+      <dt>Years</dt>
+      <dd><%= document['dct_temporal_sm'].sort.join(', ') %>&nbsp;</dd>
     <% end %>
     
   </dl>
